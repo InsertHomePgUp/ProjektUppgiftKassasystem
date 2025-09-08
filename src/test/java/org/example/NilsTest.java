@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class NilsTest {
 //hej
+    //hejhej
     @Test
     void treIsTreTest(){
         int tre = NilsClass.treIsTre();
