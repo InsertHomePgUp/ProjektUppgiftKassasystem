@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class NilsTest {
 
     @Test
-    void treIsTre(){
+    void treIsTreTest(){
         int tre = NilsClass.treIsTre();
         assertEquals(3, tre);
     }
