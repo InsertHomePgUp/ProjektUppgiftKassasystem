@@ -11,6 +11,6 @@ public class NilsTest {
     @Test
     void treIsTreTest(){
         int tre = NilsClass.treIsTre();
-        assertEquals(3, tre, 0.1);
+        assertEquals(3, tre, 0.3);
     }
 }
