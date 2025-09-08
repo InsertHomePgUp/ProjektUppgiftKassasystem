@@ -12,6 +12,7 @@ public class NilsTest {
     void treIsTreTest(){
         int tre = NilsClass.treIsTre();
         assertEquals(3, tre, 0.2);
+        //Jag valde "yours" 0.2
     }
 
 
