@@ -8,6 +8,6 @@ public class TestDanielTest {
     @Test
     void isDanielTest() {
         String actual = testDaniel.isDaniel();
-        assertEquals("Daniel", actual);
+        assertEquals("Nils", actual);
     }
 }
