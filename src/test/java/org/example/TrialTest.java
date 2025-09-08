@@ -12,4 +12,4 @@ public class TrialTest {
         assertEquals(7, s);
     }
 }
-/kommentar
+//komment
