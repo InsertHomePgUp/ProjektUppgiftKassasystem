@@ -12,7 +12,6 @@ public class Money {
         this.amountInMinorUnit = amountInMinorUnit;
     }
 
-
     public Currency getCurrency() {
         return currency;
     }
