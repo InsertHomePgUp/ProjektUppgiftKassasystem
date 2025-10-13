@@ -19,4 +19,13 @@ public class Money {
     public Money getNothing() {
         return new Money(currency, 0L);
     }
+
+    public long getAmountInMinorUnit() {
+        return amountInMinorUnit;
+    }
+
+    public Money multiply(double factor) {
+        long newAmount = (long) (amountInMinorUnit * factor);
+        return new Money(currency, newAmount);
+    }
 }

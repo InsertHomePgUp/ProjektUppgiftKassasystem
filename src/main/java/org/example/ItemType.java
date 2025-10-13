@@ -12,9 +12,13 @@ public class ItemType {
         validateDeposit(deposit);
         validateAgeLimit(ageLimit);
         this.name = name;
-        this.taxRate = taxRate;
+        this.taxRate = taxRate / 100; //To store as fraction
         this.deposit = deposit;
         this.ageLimit = ageLimit;
+    }
+
+    public ItemType(String name, double taxRate) {
+        this(name, taxRate, 0, 0);
     }
 
     public String getName() {
@@ -43,17 +47,22 @@ public class ItemType {
         if(taxRate < 0) {
             throw new IllegalArgumentException("Tax rate cannot be negative");
         }
+
+        if(taxRate >= 100) {
+            throw new IllegalArgumentException("Tax rate cannot over 100");
+        }
+
     }
 
     private void validateDeposit(int deposit) {
         if(deposit < 0) {
-            throw new IllegalArgumentException("Tax rate cannot be negative");
+            throw new IllegalArgumentException("Deposit cannot be negative");
         }
     }
 
     private void validateAgeLimit(int ageLimit) {
         if(ageLimit < 0) {
-            throw new IllegalArgumentException("Tax rate cannot be negative");
+            throw new IllegalArgumentException("Age cannot be negative");
         }
     }
 }

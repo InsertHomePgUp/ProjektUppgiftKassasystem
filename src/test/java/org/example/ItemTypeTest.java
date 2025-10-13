@@ -7,9 +7,9 @@ public class ItemTypeTest {
 
     @Test
     void constructorTest() {
-        ItemType test = new ItemType("Test", 15.0, 2, 15);
-        assertEquals("Test", test.getName());
-        assertEquals(15.0, test.getTaxRate());
+        ItemType test = new ItemType("ItemTypeName", 15.0, 2, 15);
+        assertEquals("ItemTypeName", test.getName());
+        assertEquals(0.15, test.getTaxRate());
         assertEquals(2, test.getDeposit());
         assertEquals(15, test.getAgeLimit());
     }
@@ -31,21 +31,21 @@ public class ItemTypeTest {
     @Test
     void taxRateIsNotNegative() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType("test", -5.0, 0, 0);
+            new ItemType("ItemTypeName", -5.0, 0, 0);
         });
     }
 
     @Test
     void depositIsNotNegative() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType("test", 15.0, -2, 0);
+            new ItemType("ItemTypeName", 15.0, -2, 0);
         });
     }
 
     @Test
     void ageLimitIsNotNegative() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType("test", 15.0, 2, -15);
+            new ItemType("ItemTypeName", 15.0, 2, -15);
         });
     }
 }
