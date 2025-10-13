@@ -13,7 +13,6 @@ public class Money {
     }
 
 
-
     public Currency getCurrency() {
         return currency;
     }
