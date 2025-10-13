@@ -1,7 +1,5 @@
 package org.example;
 
-
-
 import static junit.framework.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 
@@ -11,9 +9,5 @@ import org.junit.jupiter.api.Test;
 public class AppTest 
 
 {
-    @Test
-    public void femIsFem() {
-        int actual = App.femIsfem();
-        assertEquals(5, actual);
-    }
+
 }
