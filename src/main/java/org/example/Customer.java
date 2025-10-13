@@ -10,39 +10,42 @@ public class Customer {
     private final String email;
     private final String name;
     private boolean hasMembership;
-    private final ArrayList<Item> boughtItemList;
+    private final ArrayList<Item> itemList;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
-        if (name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-        if (personalIdentityNumber.trim().isEmpty()) {
-            throw new IllegalArgumentException("Personal identity number cannot be null or empty");
-        }
-        if (phoneNumber.trim().isEmpty()) {
-            throw new IllegalArgumentException("Phone number cannot be null or empty");
-        }
-        if (email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Email cannot be null or empty");
-        }
         this.name = Objects.requireNonNull(name);
+        if (name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         this.personalIdentityNumber = Objects.requireNonNull(personalIdentityNumber);
+        if (personalIdentityNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Personal identity number cannot be empty");
+        }
         this.phoneNumber = Objects.requireNonNull(phoneNumber);
+        if (phoneNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be empty");
+        }
         this.email = Objects.requireNonNull(email);
-        this.boughtItemList = new ArrayList<Item>();
+        if (email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be empty");
+        }
+        this.itemList = new ArrayList<Item>();
         this.hasMembership = false;
     }
+
     public String getPersonalIdentityNumber() {return personalIdentityNumber;}
     public String getPhoneNumber() {return phoneNumber;}
     public String getEmail() {return email;}
     public String getName() {return name;}
     public boolean getMembershipStatus() {return hasMembership;}
     public void setMembershipStatus(boolean areTheyAMember) {hasMembership = areTheyAMember;}
-    public ArrayList<Item> getBoughtItemList() {
-        return new ArrayList<>(boughtItemList);
+
+    public ArrayList<Item> getItemList() {
+        return new ArrayList<>(itemList);
     }
     public boolean addItem(Item item) {
-        boughtItemList.add(item);
+        if (itemList.contains(item)) {return false;}
+        itemList.add(item);
         return true;
     }
     @Override

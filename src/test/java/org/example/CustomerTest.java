@@ -4,15 +4,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerTest {
 
     private Customer customer;
+    private Money money;
+    private ItemType bread;
+    private Item item;
 
     @BeforeEach
     public void setUp() {
         customer = new Customer("Jane Doe", "8907028631", "0700143541", "Jane@Doe.com");
+        money = new Money(SEK.instance, 1000);
+        bread = new ItemType("Bread", 1.0, 0, 0);
+        item = new Item("Levain", bread, money);
     }
 
     @Nested
@@ -74,6 +84,20 @@ public class CustomerTest {
     @Nested
     @DisplayName("Item List Tests")
     class ItemListTests {
+
+        @Test
+        void addItemTest() {
+            customer.addItem(item);
+            List<Item> expected = new ArrayList<>();
+            expected.add(item);
+            List<Item> actual = customer.getItemList();
+            assertEquals(expected, actual);
+        }
+        @Test
+        void changingReturnedListTest() {
+            customer.getItemList().add(item);
+            assertTrue(customer.getItemList().isEmpty());
+        }
         //testa om man kan ändra i den returnerade listan
         //testa att lägga till en sak i listan
         //testa att det inte finns dubs
