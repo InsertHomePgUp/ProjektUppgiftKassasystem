@@ -44,7 +44,13 @@ public class Customer {
         return new ArrayList<>(itemList);
     }
     public boolean addItem(Item item) {
-        if (itemList.contains(item)) {return false;}
+        //osäker här, tror det inte bör gå att lägga till items med samma namn
+
+        for(Item i : itemList) {
+            if (i.getName().equals(item.getName())) {
+                return false;
+            }
+        }
         itemList.add(item);
         return true;
     }

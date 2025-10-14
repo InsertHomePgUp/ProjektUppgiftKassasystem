@@ -16,13 +16,19 @@ public class CustomerTest {
     private Money money;
     private ItemType bread;
     private Item item;
+    private Item banana;
+    private Item banana1;
+    private ItemType fruit;
 
     @BeforeEach
     public void setUp() {
         customer = new Customer("Jane Doe", "8907028631", "0700143541", "Jane@Doe.com");
         money = new Money(SEK.instance, 1000);
         bread = new ItemType("Bread", 1.0, 0, 0);
+        fruit = new ItemType("Fruit", 0.5, 0, 0);
         item = new Item("Levain", bread, money);
+        banana1 = new Item("Banana", fruit, money);
+        banana = new Item("Banana", bread, money);
     }
 
     @Nested
@@ -98,14 +104,19 @@ public class CustomerTest {
             customer.getItemList().add(item);
             assertTrue(customer.getItemList().isEmpty());
         }
-        //testa om man kan ändra i den returnerade listan
-        //testa att lägga till en sak i listan
-        //testa att det inte finns dubs
+
+        @Test
+        void addingDuplicateItemTest() {
+            customer.addItem(item);
+            customer.addItem(item);
+            customer.addItem(banana);
+            customer.addItem(banana);
+            //kollar om sak med samma namn kan läggas till, ska det kunnas, tänker att det inte ska gå?
+            customer.addItem(banana1);
+            assertEquals(2, customer.getItemList().size());
+        }
+
     }
-
-
-    //testa toString
-
 
     @Test
     void toStringTest() {
