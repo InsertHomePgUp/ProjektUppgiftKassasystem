@@ -29,6 +29,20 @@ public class ItemGroupTest {
     }
 
     @Test
+    void cannotCreateItemGroupWithoutName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            ItemGroup ig = new ItemGroup("");
+        });
+    }
+
+    @Test
+    void cannotCreateItemGroupWithNullName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            ItemGroup ig = new ItemGroup(null);
+        });
+    }
+
+    @Test
     void newItemGroupIsEmpty() {
         assertEquals(0, itemGroup.getSize());
     }
@@ -93,4 +107,10 @@ public class ItemGroupTest {
             itemGroup.removeItem(itemTwo);
         });
     }
+
+    @Test
+    void addRemoveAddToAnotherCha() {
+        ItemGroup
+    }
+
 }

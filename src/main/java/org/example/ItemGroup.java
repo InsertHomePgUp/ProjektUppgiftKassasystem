@@ -9,6 +9,7 @@ public class ItemGroup {
     private final List<Item> items = new ArrayList<>();
 
     public ItemGroup(String name) {
+        validateName(name);
         this.name = name;
     }
 
@@ -21,13 +22,12 @@ public class ItemGroup {
     }
 
     public void addItem(Item item) {
-        if(item == null) {
-            throw new IllegalArgumentException("Item cannot be null");
-        }
-        if(items.contains(item)) {
+        validateItem(item);
+        if (items.contains(item)) {
             throw new IllegalArgumentException("Item is already in this group");
+        } else {
+            items.add(item);
         }
-        items.add(item);
     }
 
     public boolean contains(Item item) {
@@ -35,17 +35,27 @@ public class ItemGroup {
     }
 
     public void removeItem(Item item) {
-        if(item == null) {
-            throw new IllegalArgumentException("Item cannot be null");
-        }
-        if(items.contains(item)) {
-            items.remove(item);
-        } else {
+        validateItem(item);
+        if(!items.contains(item)) {
             throw new IllegalArgumentException("Item is not in this group");
+        } else {
+            items.remove(item);
         }
     }
 
     public List<Item> getItems() {
         return Collections.unmodifiableList(items);
+    }
+
+    private void validateName(String name) {
+        if(name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+    }
+
+    private void validateItem(Item item) {
+        if(item == null) {
+            throw new IllegalArgumentException("Item cannot be null");
+        }
     }
 }
