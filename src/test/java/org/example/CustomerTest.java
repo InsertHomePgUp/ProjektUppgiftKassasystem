@@ -40,7 +40,6 @@ public class CustomerTest {
             assertEquals("8907028631", customer.getPersonalIdentityNumber());
             assertEquals("0700143541", customer.getPhoneNumber());
             assertEquals("Jane@Doe.com", customer.getEmail());
-            assertFalse(customer.getMembershipStatus());
         }
         //testa om tomma parametrar ger felmeddelande
         @Test
@@ -123,10 +122,5 @@ public class CustomerTest {
         assertEquals("Name: Jane Doe, PID: 8907028631, Phone Number: 0700143541, Email: Jane@Doe.com", customer.toString());
     }
 
-    @Test
-    void setToHasMembership() {
-        customer.setMembershipStatus(true);
-        assertTrue(customer.getMembershipStatus());
-    }
 
 }

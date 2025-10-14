@@ -9,8 +9,8 @@ public class Customer {
     private final String phoneNumber;
     private final String email;
     private final String name;
-    private boolean hasMembership;
     private final ArrayList<Item> itemList;
+    private Membership membership;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
         this.name = Objects.requireNonNull(name);
@@ -29,23 +29,33 @@ public class Customer {
         if (email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
+
         this.itemList = new ArrayList<Item>();
-        this.hasMembership = false;
+        this.membership = new NoMembership();
     }
 
     public String getPersonalIdentityNumber() {return personalIdentityNumber;}
+
     public String getPhoneNumber() {return phoneNumber;}
+
     public String getEmail() {return email;}
+
     public String getName() {return name;}
-    public boolean getMembershipStatus() {return hasMembership;}
-    public void setMembershipStatus(boolean areTheyAMember) {hasMembership = areTheyAMember;}
+
+    public boolean isMember() {
+        return membership.isActive();
+    }
+
+    public void setMembership(Membership membership) {
+        this.membership = membership;
+    }
 
     public ArrayList<Item> getItemList() {
         return new ArrayList<>(itemList);
     }
+
     public boolean addItem(Item item) {
         //osäker här, tror det inte bör gå att lägga till items med samma namn
-
         for(Item i : itemList) {
             if (i.getName().equals(item.getName())) {
                 return false;
@@ -54,9 +64,11 @@ public class Customer {
         itemList.add(item);
         return true;
     }
+
     @Override
     public String toString() {
         return "Name: " + name + ", PID: " + personalIdentityNumber +
                 ", Phone Number: " + phoneNumber + ", Email: " + email;
     }
+
 }
