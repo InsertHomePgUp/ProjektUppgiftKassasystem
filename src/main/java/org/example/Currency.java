@@ -10,4 +10,8 @@ public class Currency {
         this.symbol = symbol;
         this.denominations = denominations;
     }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }
