@@ -4,30 +4,57 @@ import java.util.*;
 
 public class Transaction {
 
-    private int totalPrice;
-    private Set<Item> items;
-    Set <Deductor> deductors;
+    private double totalPrice;
+    private List<Item> items;
+    private List <Deductor> deductors;
     private boolean paid;
 
-    public Transaction(Set<Item> items, Set<Deductor> deductors){
+    public Transaction(List<Item> items, List<Deductor> deductors){
         this.items = items;
         this.deductors = deductors;
         this.paid = false;
     }
 
-    public int getTotalPrice(){
+    public double getTotalPrice(){
         for (Item item : items){
-            totalPrice += item.getPrice();
+            totalPrice += item.getPrice().getAmountInMinorUnit();
+            System.out.println(totalPrice);
+
         }
-        return totalPrice;
+        for (Deductor deductor : deductors){
+            switch (deductor.getType()){
+                case("Presentkort"):
+                    System.out.println("presentkort appliceras");
+
+                    totalPrice -= deductor.getAmount()*100;
+                    System.out.println(totalPrice);
+
+                    break;
+                case("Bonuscheck"):
+                    System.out.println("bonuscheck appliceras");
+
+                    totalPrice -= deductor.getAmount();
+                    System.out.println(totalPrice);
+
+                    break;
+                case("Rabatt"):
+                    System.out.println("rabatt appliceras: " + deductor.getAmount() * 0.01);
+                    totalPrice -= totalPrice * (deductor.getAmount() * 0.01);
+                    System.out.println(totalPrice);
+
+                    break;
+
+            }
+        }
+        return totalPrice / 100;
     }
 
-    public void payWithCard(){
+    public void payWithCard(Currency currency){
 
         paid = true;
     }
 
-    public void payWithCash(){
+    public void payWithCash(Currency currency){
 
         paid = true;
     }
@@ -36,10 +63,12 @@ public class Transaction {
         if(paid){
             StringBuilder receipt = new StringBuilder();
             for(Item item : items){
+                //System.out.println(items);
                 receipt.append(item.getName())
                         .append("   ")
                         .append(item.getPrice())
                         .append("\n");
+                //System.out.println("added " + item.getName());
             }
             for(Deductor deductor : deductors){
                 receipt.append(deductor.getType())
@@ -47,6 +76,8 @@ public class Transaction {
                         .append(deductor.getAmount())
                         .append("\n");
             }
+            receipt.append("Totalt:   ")
+                    .append(getTotalPrice());
             return receipt;
         }else {
             throw new IllegalStateException("Betala för att få kvittot");
