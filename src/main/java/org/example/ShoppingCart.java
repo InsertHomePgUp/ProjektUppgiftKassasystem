@@ -4,10 +4,10 @@ import java.util.*;
 
 public class ShoppingCart {
 
-    private TreeSet<Item> cart;
+    private List<Item> cart;
 
     public ShoppingCart() {
-        cart = new TreeSet<>();
+        cart = new ArrayList<>();
     }
 
     public void addItem(Item item){
@@ -18,7 +18,7 @@ public class ShoppingCart {
         cart.remove(item);
     }
 
-    public Set<Item> viewCart(){
+    public List<Item> viewCart(){
         return cart;
     }
 }

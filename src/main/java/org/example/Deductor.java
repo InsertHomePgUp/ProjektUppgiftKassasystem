@@ -3,7 +3,7 @@ package org.example;
 public class Deductor {
 
     //rabatt, bonuscheckar, presentkort
-    private int amount;
+    private float amount;
     private String type;
 
     public Deductor(int amount, String type){
@@ -11,10 +11,15 @@ public class Deductor {
         this.type=type;
     }
 
-    public int getAmount(){
+    public float getAmount(){
         return amount;
     }
     public String getType(){
         return type;
+    }
+
+    @Override
+    public String toString(){
+        return type + amount;
     }
 }
