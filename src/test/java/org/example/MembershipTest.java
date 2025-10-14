@@ -30,4 +30,12 @@ public class MembershipTest {
             assertTrue(customer.isMember());
         }
     }
+    @Nested
+    @DisplayName("Membership method tests")
+    class MembershipTests {
+        @Test
+        void testDiscountList() {
+
+        }
+    }
 }

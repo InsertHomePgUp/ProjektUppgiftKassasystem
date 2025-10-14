@@ -10,7 +10,7 @@ public class NoMembership implements Membership {
     };
 
     @Override
-    public HashMap<Item, Integer> discounts(){
+    public HashMap<Item, Double> getDiscounts(){
         return null;
     };
 
