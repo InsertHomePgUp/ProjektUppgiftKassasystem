@@ -31,6 +31,10 @@ public class Item {
         return price.multiply((1 + itemType.getTaxRate()));
     }
 
+    public String toString () {
+        return String.format("%s, %s, %s", name, itemType.getName(), price.toString());
+    }
+
     private void validateName(String name) {
         if(name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty");

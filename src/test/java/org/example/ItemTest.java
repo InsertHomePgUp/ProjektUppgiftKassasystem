@@ -12,8 +12,8 @@ public class ItemTest {
 
     @BeforeEach
     void createItemTypeAndMoney() {
-        itemType = new ItemType("Test", 15.0, 2, 0);
-        currency = new Currency("Svenska kronor", "SEK",
+        itemType = new ItemType("TestItemType", 15.0, 2, 0);
+        currency = new Currency("Svenska kronor", "kr",
                 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
         price = new Money(currency, 10000);
     }
@@ -88,5 +88,13 @@ public class ItemTest {
         ItemType itemTypeZeroTax = new ItemType("Test", 12.5, 2, 0);
         Item item = new Item("TestItem", itemTypeZeroTax, price);
         assertEquals(11250L, item.getPriceWithTax().getAmountInMinorUnit());
+    }
+
+    @Test
+    void toStringPrintsProperly() {
+        Item itemOne = new Item("TestItem", itemType, price);
+        Item itemTwo = new Item("TestItem", itemType, new Money(currency, 1250));
+        assertEquals("TestItem, TestItemType, 100,00 kr", itemOne.toString());
+        assertEquals("TestItem, TestItemType, 12,50 kr", itemTwo.toString());
     }
 }

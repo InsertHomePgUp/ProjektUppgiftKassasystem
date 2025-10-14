@@ -24,8 +24,25 @@ public class Money {
         return amountInMinorUnit;
     }
 
+    private long getRestAfterMajorUnit() {
+        return amountInMinorUnit % MAJOR_UNIT;
+    }
+
+    public long getAmountInMajorUnit() {
+        return amountInMinorUnit / MAJOR_UNIT;
+    }
+
     public Money multiply(double factor) {
         long newAmount = (long) (amountInMinorUnit * factor);
         return new Money(currency, newAmount);
     }
+
+    public String toString() {
+        if(getRestAfterMajorUnit() == 0) {
+            return String.format("%d,%d0 %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());
+        }
+        return String.format("%d,%d %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());
+    }
+
+
 }

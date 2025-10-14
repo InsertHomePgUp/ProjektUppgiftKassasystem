@@ -37,6 +37,7 @@ public class ItemType {
         return ageLimit;
     }
 
+
     private void validateName(String name) {
         if(name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty");
