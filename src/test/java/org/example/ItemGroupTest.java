@@ -107,10 +107,4 @@ public class ItemGroupTest {
             itemGroup.removeItem(itemTwo);
         });
     }
-
-    @Test
-    void addRemoveAddToAnotherCha() {
-        ItemGroup
-    }
-
 }
