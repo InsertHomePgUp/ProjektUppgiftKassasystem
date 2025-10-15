@@ -2,6 +2,26 @@ package org.example;
 
 public class Item {
 
+
+    //Deposit är int, bör vara Money
+    //getPrice
+    //GetDeposit
+    //getpricewithTAx(ej deposit)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private final String name;
     private final Money price;
     private final ItemType itemType;
@@ -26,6 +46,7 @@ public class Item {
     public Money getPrice() {
         return price;
     }
+
 
     public Money getPriceWithTax() {
         return price.multiply((1 + itemType.getTaxRate()));

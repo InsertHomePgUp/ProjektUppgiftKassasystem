@@ -3,10 +3,10 @@ package org.example;
 public class ItemType {
     private final String name;
     private final double taxRate;
-    private final int deposit;
+    private final Money deposit;
     private final int ageLimit;
 
-    public ItemType(String name, double taxRate, int deposit, int ageLimit) {
+    public ItemType(String name, double taxRate, Money deposit, int ageLimit) {
         validateName(name);
         validateTaxRate(taxRate);
         validateDeposit(deposit);
@@ -17,9 +17,6 @@ public class ItemType {
         this.ageLimit = ageLimit;
     }
 
-    public ItemType(String name, double taxRate) {
-        this(name, taxRate, 0, 0);
-    }
 
     public String getName() {
         return name;
@@ -29,8 +26,8 @@ public class ItemType {
         return taxRate;
     }
 
-    public int getDeposit() {
-        return deposit;
+    public long getDeposit() {
+        return deposit.getAmountInMajorUnit();
     }
 
     public int getAgeLimit() {
@@ -55,8 +52,8 @@ public class ItemType {
 
     }
 
-    private void validateDeposit(int deposit) {
-        if(deposit < 0) {
+    private void validateDeposit(Money deposit) {
+        if(deposit.getAmountInMinorUnit() < 0) {
             throw new IllegalArgumentException("Deposit cannot be negative");
         }
     }

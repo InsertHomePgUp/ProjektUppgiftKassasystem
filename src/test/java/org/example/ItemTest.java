@@ -9,13 +9,16 @@ public class ItemTest {
     private ItemType itemType;
     private Currency currency;
     private Money price;
+    private Money deposit;
+
 
     @BeforeEach
     void createItemTypeAndMoney() {
-        itemType = new ItemType("TestItemType", 15.0, 2, 0);
         currency = new Currency("Svenska kronor", "kr",
                 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
         price = new Money(currency, 10000);
+        deposit = new Money(currency, 200);
+        itemType = new ItemType("TestItemType", 15.0, deposit, 0);
     }
 
     @Test
@@ -78,14 +81,14 @@ public class ItemTest {
 
     @Test
     void priceWithZeroTaxCalculatedCorrectly() {
-        ItemType itemTypeZeroTax = new ItemType("Test", 0.0, 2, 0);
+        ItemType itemTypeZeroTax = new ItemType("Test", 0.0, deposit, 0);
         Item item = new Item("TestItem", itemTypeZeroTax, price);
         assertEquals(10000L, item.getPriceWithTax().getAmountInMinorUnit());
     }
 
     @Test
     void priceWithFractionalTaxCalculatedCorrectly() {
-        ItemType itemTypeZeroTax = new ItemType("Test", 12.5, 2, 0);
+        ItemType itemTypeZeroTax = new ItemType("Test", 12.5, deposit, 0);
         Item item = new Item("TestItem", itemTypeZeroTax, price);
         assertEquals(11250L, item.getPriceWithTax().getAmountInMinorUnit());
     }

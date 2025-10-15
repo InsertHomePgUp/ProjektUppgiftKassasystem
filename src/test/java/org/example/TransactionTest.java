@@ -14,11 +14,14 @@ public class TransactionTest {
         return SEK;
     }
 
+
     public List<Item> createItems(){
         List<Item> items = new ArrayList<>();
         Currency SEK = createSEK();
 
-        ItemType vegetable = new ItemType("Vegetable", 0.25, 10, 0);
+        Money deposit = new Money(SEK, 100);
+
+        ItemType vegetable = new ItemType("Vegetable", 0.25, deposit, 0);
         Money tomatoPrice = new Money(SEK, 625);
         Item tomato = new Item("Tomato", vegetable, tomatoPrice);
         items.add(tomato);
@@ -26,7 +29,7 @@ public class TransactionTest {
         Item cucumber = new Item("Cucumber", vegetable, cucumberPrice);
         items.add(cucumber);
 
-        ItemType dairy = new ItemType("Dairy", 0.25, 10, 0);
+        ItemType dairy = new ItemType("Dairy", 0.25, deposit, 0);
         Money milkPrice = new Money(SEK, 1500);
         Item milk = new Item("Milk", dairy, milkPrice);
         items.add(milk);

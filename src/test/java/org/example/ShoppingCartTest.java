@@ -7,11 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ShoppingCartTest {
 
     Currency currency;
+    Money deposit;
 
     @BeforeEach
     void createCurrency(){
         currency = new Currency("Svenska kronor", "kr",
                 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
+        deposit = new Money(currency, 200);
     }
 
     @Test
@@ -23,13 +25,13 @@ public class ShoppingCartTest {
         Money hamPrice = new Money(currency, 2950);
 
         Item tomato = new Item("tomato",
-                new ItemType("vegetable", 0.25, 0, 0),
+                new ItemType("vegetable", 0.25, deposit, 0),
                 tomatoPrice);
         Item cheese = new Item("cheese",
-                new ItemType("dairy", 0.25, 0, 0),
+                new ItemType("dairy", 0.25, deposit, 0),
                 cheesePrice);
         Item ham = new Item("ham",
-                new ItemType("chark", 0.25, 0, 0),
+                new ItemType("chark", 0.25, deposit, 0),
                 hamPrice);
 
         s.addItem(tomato);
@@ -47,13 +49,13 @@ public class ShoppingCartTest {
         Money hamPrice = new Money(currency, 625);
 
         Item tomato = new Item("tomato",
-                new ItemType("vegetable", 0.25, 0, 0),
+                new ItemType("vegetable", 0.25, deposit, 0),
                 tomatoPrice);
         Item cheese = new Item("cheese",
-                new ItemType("dairy", 0.25, 0, 0),
+                new ItemType("dairy", 0.25, deposit, 0),
                 cheesePrice);
         Item ham = new Item("ham",
-                new ItemType("chark", 0.25, 0, 0),
+                new ItemType("chark", 0.25, deposit, 0),
                 hamPrice);
 
         s.addItem(tomato);
