@@ -70,7 +70,7 @@ public class ShoppingCartTest {
         ShoppingCart s = new ShoppingCart();
         Money hamPrice = new Money(currency, 625);
         Item ham = new Item("ham",
-                new ItemType("chark", 0.25, 0, 0),
+                new ItemType("chark", 0.25, deposit, 0),
                 hamPrice);
         assertThrows(IllegalArgumentException.class, () -> {
             s.removeItem(ham);
