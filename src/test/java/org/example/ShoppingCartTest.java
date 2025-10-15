@@ -62,4 +62,16 @@ public class ShoppingCartTest {
         s.removeItem(ham);
         assertEquals("[tomato, vegetable, 6,25 kr, cheese, dairy, 80,00 kr]", s.viewCart().toString());
     }
+
+    @Test
+    public void removeItemsInEmptyCart(){
+        ShoppingCart s = new ShoppingCart();
+        Money hamPrice = new Money(currency, 625);
+        Item ham = new Item("ham",
+                new ItemType("chark", 0.25, 0, 0),
+                hamPrice);
+        assertThrows(IllegalArgumentException.class, () -> {
+            s.removeItem(ham);
+        });
+    }
 }

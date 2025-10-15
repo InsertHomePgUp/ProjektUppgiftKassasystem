@@ -19,42 +19,42 @@ public class Transaction {
         for (Item item : items){
             totalPrice += item.getPrice().getAmountInMinorUnit();
             System.out.println(totalPrice);
-
         }
         for (Deductor deductor : deductors){
             switch (deductor.getType()){
                 case("Presentkort"):
                     System.out.println("presentkort appliceras");
-
                     totalPrice -= deductor.getAmount()*100;
                     System.out.println(totalPrice);
-
                     break;
+
                 case("Bonuscheck"):
                     System.out.println("bonuscheck appliceras");
-
-                    totalPrice -= deductor.getAmount();
+                    totalPrice -= deductor.getAmount()*100;
                     System.out.println(totalPrice);
-
                     break;
+
                 case("Rabatt"):
                     System.out.println("rabatt appliceras: " + deductor.getAmount() * 0.01);
                     totalPrice -= totalPrice * (deductor.getAmount() * 0.01);
                     System.out.println(totalPrice);
-
                     break;
 
+                default:
+                        throw new IllegalArgumentException("Invalid deductor");
             }
         }
+        //if totalprice < 0 --> totalprice == 0
         return totalPrice / 100;
     }
 
     public void payWithCard(Currency currency){
-
         paid = true;
     }
 
-    public void payWithCash(Currency currency){
+    public void payWithCash(Currency currency, int[] denominators){
+
+        //lägg in det som betalats i kassan
 
         paid = true;
     }

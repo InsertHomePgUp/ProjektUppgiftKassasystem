@@ -15,7 +15,11 @@ public class ShoppingCart {
     }
 
     public void removeItem(Item item){
-        cart.remove(item);
+        if (cart.contains(item)){
+            cart.remove(item);
+        }else{
+            throw new IllegalArgumentException("item not found in cart");
+        }
     }
 
     public List<Item> viewCart(){

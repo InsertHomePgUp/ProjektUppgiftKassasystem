@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TransactionTest {
 
-    Currency createSEK(){
+    public Currency createSEK(){
         Currency SEK = new Currency("Svenska kronor", "kr",
                 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
         return SEK;
@@ -39,10 +39,13 @@ public class TransactionTest {
 
     public List<Deductor> createDeductors(){
         List<Deductor> deductors = new ArrayList<Deductor>();
+
         Deductor Presentkort50 = new Deductor(50, "Presentkort");
         deductors.add(Presentkort50);
+
         Deductor Rabatt20 = new Deductor(20, "Rabatt");
         deductors.add(Rabatt20);
+
         return deductors;
     }
 
@@ -60,7 +63,14 @@ public class TransactionTest {
     }
 
     @Test
-    public void correctTotal(){
+    public void correctTotalWithoutDeductors(){
+        Currency SEK = createSEK();
+        List<Deductor> emptyList = new ArrayList<Deductor>();
+        Transaction t = new Transaction(createItems(), emptyList);
+        assertEquals(111.25, t.getTotalPrice());
+    }
+    @Test
+    public void correctTotalWithDeductors(){
         Currency SEK = createSEK();
         Transaction t = new Transaction(createItems(), createDeductors());
         assertEquals(49, t.getTotalPrice());
@@ -78,5 +88,28 @@ public class TransactionTest {
                 "Presentkort   50.0\n" +
                 "Rabatt   20.0\n" +
                 "Totalt:   49.0", t.getReceipt().toString());
+    }
+
+    @Test
+    public void paidWithCash(){
+        //kund betalar med kontant och får växel
+        //växel går in i kassan
+    }
+
+    @Test
+    public void receiptWithoutPaying(){
+        Currency SEK = createSEK();
+        Transaction t = new Transaction(createItems(), createDeductors());
+        assertThrows(IllegalStateException.class, t::getReceipt);
+    }
+
+    @Test
+    public void correctValueWithBonuscheck100(){
+        List<Deductor> deductors = new ArrayList<Deductor>();
+        Deductor Bonuscheck100 = new Deductor(100, "Bonuscheck");
+        deductors.add(Bonuscheck100);
+        Currency SEK = createSEK();
+        Transaction t = new Transaction(createItems(), deductors);
+        assertEquals(11.25, t.getTotalPrice());
     }
 }
