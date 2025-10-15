@@ -29,7 +29,7 @@ public class MembershipTest {
             customer.setMembership(membership);
             assertTrue(customer.isMember());
         }
-    }
+    }//
     @Nested
     @DisplayName("Membership method tests")
     class MembershipTests {
