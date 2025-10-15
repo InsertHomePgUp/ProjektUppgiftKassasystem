@@ -26,8 +26,8 @@ public class ItemType {
         return taxRate;
     }
 
-    public long getDeposit() {
-        return deposit.getAmountInMajorUnit();
+    public Money getDeposit() {
+        return deposit;
     }
 
     public int getAgeLimit() {

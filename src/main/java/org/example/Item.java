@@ -1,27 +1,6 @@
 package org.example;
 
 public class Item {
-
-
-    //Deposit är int, bör vara Money
-    //getPrice
-    //GetDeposit
-    //getpricewithTAx(ej deposit)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private final String name;
     private final Money price;
     private final ItemType itemType;
@@ -47,11 +26,15 @@ public class Item {
         return price;
     }
 
+    public Money getDeposit() {
+        return getItemType().getDeposit();
+    }
 
     public Money getPriceWithTax() {
         return price.multiply((1 + itemType.getTaxRate()));
     }
 
+    @Override
     public String toString () {
         return String.format("%s, %s, %s", name, itemType.getName(), price.toString());
     }

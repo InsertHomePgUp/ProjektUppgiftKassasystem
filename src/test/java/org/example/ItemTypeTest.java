@@ -21,7 +21,7 @@ public class ItemTypeTest {
         ItemType test = new ItemType("ItemTypeName", 15.0, deposit, 15);
         assertEquals("ItemTypeName", test.getName());
         assertEquals(0.15, test.getTaxRate());
-        assertEquals(2, test.getDeposit());
+        assertEquals(2, test.getDeposit().getAmountInMajorUnit());
         assertEquals(15, test.getAgeLimit());
     }
 
