@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Customer {
@@ -9,7 +10,7 @@ public class Customer {
     private final String phoneNumber;
     private final String email;
     private final String name;
-    private final ArrayList<Item> itemList;
+    private final HashMap<Item, Integer> itemList;
     private Membership membership;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
@@ -30,7 +31,7 @@ public class Customer {
             throw new IllegalArgumentException("Email cannot be empty");
         }
 
-        this.itemList = new ArrayList<Item>();
+        this.itemList = new HashMap<Item, Integer>();
         this.membership = new NoMembership();
     }
 
@@ -50,20 +51,20 @@ public class Customer {
         this.membership = membership;
     }
 
-    public ArrayList<Item> getItemList() {
-        return new ArrayList<>(itemList);
+    public HashMap<Item, Integer> getItemList() {
+        return new HashMap<>(itemList);
     }
 
-    public boolean addItem(Item item) {
+    public void addItem(Item item) {
         //osäker här, tror det inte bör gå att lägga till items med samma namn
         //hashmap med antalet som värde
-        for(Item i : itemList) {
+        for(Item i : itemList.keySet()) {
             if (i.getName().equals(item.getName())) {
-                return false;
+                int x = itemList.get(i) + 1;
+                itemList.put(i, x);
             }
         }
-        itemList.add(item);
-        return true;
+        itemList.put(item, 1);
     }
 
     //lägga till poäng
