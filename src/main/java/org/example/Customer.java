@@ -66,6 +66,8 @@ public class Customer {
         return true;
     }
 
+    //lägga till poäng
+
     @Override
     public String toString() {
         return "Name: " + name + ", PID: " + personalIdentityNumber +
