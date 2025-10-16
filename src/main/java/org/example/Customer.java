@@ -56,6 +56,7 @@ public class Customer {
 
     public boolean addItem(Item item) {
         //osäker här, tror det inte bör gå att lägga till items med samma namn
+        //hashmap med antalet som värde
         for(Item i : itemList) {
             if (i.getName().equals(item.getName())) {
                 return false;
