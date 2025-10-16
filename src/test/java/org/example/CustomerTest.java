@@ -24,8 +24,8 @@ public class CustomerTest {
     public void setUp() {
         customer = new Customer("Jane Doe", "8907028631", "0700143541", "Jane@Doe.com");
         money = new Money(SEK.instance, 1000);
-        bread = new ItemType("Bread", 1.0, 0, 0);
-        fruit = new ItemType("Fruit", 0.5, 0, 0);
+        bread = new ItemType("Bread", 1.0, money, 0);
+        fruit = new ItemType("Fruit", 0.5, money, 0);
         item = new Item("Levain", bread, money);
         banana1 = new Item("Banana", fruit, money);
         banana = new Item("Banana", bread, money);
