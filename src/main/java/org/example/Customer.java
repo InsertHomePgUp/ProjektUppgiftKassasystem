@@ -67,7 +67,7 @@ public class Customer {
         itemList.put(item, 1);
     }
 
-    //lägga till poäng
+    //lägga till poäng här
 
     @Override
     public String toString() {
