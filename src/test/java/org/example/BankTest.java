@@ -45,5 +45,27 @@ public class BankTest {
 		assertEquals(USDollar.getAmountInMinorUnit(), 100);
 
 	}
+	
+	@Test
+	public void exchangeUSDtoEuro() {
+
+		Money moneyUSD = new Money(USD, 1000);
+
+		Money moneyEuro = bank.exchange(moneyUSD, euro);
+
+		assertEquals(moneyEuro.getAmountInMinorUnit(),10000/11);
+
+	}
+	
+	@Test
+	public void exchangeUnkownCurrancyToSek() {
+
+		Money UnknowMoney = new Money(new Currency("Danska Kronor", "DKR", 100,50,1), 1000);
+		 assertThrows(IllegalArgumentException.class,() -> bank.exchange(UnknowMoney, SEK),
+		           "Expected exchange to throw, but it didn't"
+		    );
+
+
+	}
 
 }
