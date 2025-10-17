@@ -37,7 +37,6 @@ public class Money {
         return new Money(currency, newAmount);
     }
 
-
     public String toString() {
         if(getRestAfterMajorUnit() == 0) {
             return String.format("%d,%d0 %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());

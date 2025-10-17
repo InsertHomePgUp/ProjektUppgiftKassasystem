@@ -48,11 +48,11 @@ public class Transaction {
         return totalPrice / 100;
     }
 
-    public void payWithCard(Currency currency){
+    public void payWithCard(Money amount){
         paid = true;
     }
 
-    public void payWithCash(Currency currency, int[] denominators){
+    public void payWithCash(Money amount, int[] denominators){
 
         //lägg in det som betalats i kassan
 

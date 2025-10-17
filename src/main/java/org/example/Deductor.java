@@ -18,6 +18,11 @@ public class Deductor {
         return type;
     }
 
+    //100 intar = 1 kr
+    public int checkBonus(Customer customer){
+        return customer.getBonus();
+    }
+
     @Override
     public String toString(){
         return type + amount;
