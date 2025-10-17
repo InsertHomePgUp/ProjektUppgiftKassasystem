@@ -14,7 +14,6 @@ public class TransactionTest {
         return SEK;
     }
 
-
     public List<Item> createItems(){
         List<Item> items = new ArrayList<>();
         Currency SEK = createSEK();
@@ -59,9 +58,8 @@ public class TransactionTest {
 
     @Test
     public void createReceipt(){
-        Currency SEK = createSEK();
         Transaction t = new Transaction(createItems(), createDeductors());
-        t.payWithCard(SEK);
+        t.payWithCard();
         t.getReceipt();
     }
 
@@ -81,9 +79,8 @@ public class TransactionTest {
 
     @Test
     public void receiptContainsAll(){
-        Currency SEK = createSEK();
         Transaction t = new Transaction(createItems(), createDeductors());
-        t.payWithCard(SEK);
+        t.payWithCard();
         assertEquals("Tomato   6,25 kr\n" +
                 "Cucumber   10,00 kr\n" +
                 "Milk   15,00 kr\n" +
@@ -94,9 +91,37 @@ public class TransactionTest {
     }
 
     @Test
-    public void paidWithCash(){
-        //kund betalar med kontant och får växel
-        //växel går in i kassan
+    public void paidWithCashExactAmount(){
+        ArrayList<Integer> moneyToAdd = new ArrayList<Integer>();
+        moneyToAdd.add(2);
+        moneyToAdd.add(2);
+        moneyToAdd.add(5);
+        moneyToAdd.add(20);
+        moneyToAdd.add(20);
+        CashRegister register = new CashRegister(moneyToAdd);
+        Transaction t = new Transaction(createItems(), createDeductors());
+        assertEquals(new ArrayList<>().toString() , t.payWithCash(register, moneyToAdd).toString());
+    }
+
+    @Test
+    public void paidWithCashHigherAmount(){
+        ArrayList<Integer> moneyToAdd = new ArrayList<Integer>();
+        moneyToAdd.add(1);
+        moneyToAdd.add(1);
+        moneyToAdd.add(1);
+        moneyToAdd.add(2);
+        moneyToAdd.add(10);
+
+        ArrayList<Integer> customerPaysWith = new ArrayList<>();
+        customerPaysWith.add(50);
+
+        ArrayList<Integer> expectedChange = new ArrayList<>();
+        expectedChange.add(1);
+
+        CashRegister register = new CashRegister(moneyToAdd);
+        Transaction t = new Transaction(createItems(), createDeductors());
+
+        assertEquals(expectedChange.toString() , t.payWithCash(register, customerPaysWith).toString());
     }
 
     @Test

@@ -37,6 +37,22 @@ public class Money {
         return new Money(currency, newAmount);
     }
 
+    public Money addInMinor(long addedMinorUnits) {
+        return new Money(currency, amountInMinorUnit + addedMinorUnits);
+    }
+
+    public Money addInMajor(long addedMajorUnits) {
+        return new Money(currency, amountInMinorUnit + addedMajorUnits * MAJOR_UNIT);
+    }
+
+    public Money subtractInMinor(long addedMinorUnits) {
+        return new Money(currency, amountInMinorUnit - addedMinorUnits);
+    }
+
+    public Money subtractInMajor(long addedMajorUnits) {
+        return new Money(currency, amountInMinorUnit - addedMajorUnits * MAJOR_UNIT);
+    }
+
     public String toString() {
         if(getRestAfterMajorUnit() == 0) {
             return String.format("%d,%d0 %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());

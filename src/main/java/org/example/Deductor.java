@@ -20,7 +20,7 @@ public class Deductor {
 
     //100 intar = 1 kr
     public int checkBonus(Customer customer){
-        return customer.getBonus();
+        return 0;
     }
 
     @Override

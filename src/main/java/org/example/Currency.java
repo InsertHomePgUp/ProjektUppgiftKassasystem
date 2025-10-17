@@ -12,6 +12,10 @@ public class Currency implements Comparable<Currency> {
 		this.denominations = denominations;
 	}
 
+	public int [] getDenominations(){
+		return denominations;
+	}
+
 	@Override
 	public String toString() {
 		return this.name;
