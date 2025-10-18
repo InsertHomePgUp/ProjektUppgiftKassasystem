@@ -56,7 +56,7 @@ public class Customer {
     }
 
     public void addItem(Item item) {
-        //osäker här, tror det inte bör gå att lägga till items med samma namn
+        //osäker här, tror det inte bör gå att lägga till items med samma namnd
         //hashmap med antalet som värde
         for(Item i : itemList.keySet()) {
             if (i.getName().equals(item.getName())) {
