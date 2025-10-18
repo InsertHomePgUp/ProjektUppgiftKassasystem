@@ -15,7 +15,7 @@ public class NoMembership implements Membership {
     };
 
     @Override
-    public boolean addDiscountRate(double discountRate){
+    public boolean addDiscountRate(Item item, double discountRate){
         return false;
     };
 

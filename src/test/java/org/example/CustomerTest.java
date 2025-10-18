@@ -149,6 +149,26 @@ public class CustomerTest {
             customer.addOrSubtractBonusPoints(-10);
             assertEquals(90, customer.getBonusPoints());
         }
+        @Test
+        void addingWithAndWithoutMembershipTest(){
+            customer.addOrSubtractBonusPoints(100);
+            assertEquals(0, customer.getBonusPoints());
+            customer.setMembership(new TimeLimitedMembership());
+            customer.addOrSubtractBonusPoints(100);
+            assertEquals(100, customer.getBonusPoints());
+        }
+        @Test
+        void addingAndSubtractingRepeatedly() {
+            customer.addOrSubtractBonusPoints(100);
+            assertEquals(0, customer.getBonusPoints());
+            customer.setMembership(new TimeLimitedMembership());
+            customer.addOrSubtractBonusPoints(100);
+            customer.addOrSubtractBonusPoints(-99);
+            customer.addOrSubtractBonusPoints(-1);
+            customer.addOrSubtractBonusPoints(20);
+            customer.addOrSubtractBonusPoints(4);
+            assertEquals(24, customer.getBonusPoints());
+        }
     }
 
     @Test

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class TimeLimitedMembership implements Membership {
 
+    private final HashMap<Item,Double> discountedItems = new HashMap<>();
     @Override
     public boolean isActive(){
         return true;
@@ -11,12 +12,13 @@ public class TimeLimitedMembership implements Membership {
 
     @Override
     public HashMap<Item, Double> getDiscounts(){
-        return null;
+        return discountedItems;
     };
 
     @Override
-    public boolean addDiscountRate(double discountRate){
-        return false;
+    public boolean addDiscountRate(Item item, double discountRate){
+        discountedItems.put(item,discountRate);
+        return true;
     };
 
     @Override

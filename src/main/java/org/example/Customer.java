@@ -57,8 +57,6 @@ public class Customer {
     }
 
     public void addItem(Item item) {
-        //osäker här, tror det inte bör gå att lägga till items med samma namnd
-        //hashmap med antalet som värde
         for(Item i : itemList.keySet()) {
             if (i.getName().equals(item.getName())) {
                 int x = itemList.get(i) + 1;
@@ -77,7 +75,11 @@ public class Customer {
 
     public void addOrSubtractBonusPoints(long bonusPoints) {
         if(membership.isActive()) {
-            this.bonusPoints += bonusPoints;
+            if(this.bonusPoints + bonusPoints < 0) {
+                this.bonusPoints = 0;
+            } else {
+                this.bonusPoints += bonusPoints;
+            }
         }
     }
 
