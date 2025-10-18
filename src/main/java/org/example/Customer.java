@@ -12,7 +12,7 @@ public class Customer {
     private final String name;
     private final HashMap<Item, Integer> itemList;
     private Membership membership;
-    private long bonusPoints;
+    private int bonusPoints;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
         this.name = Objects.requireNonNull(name);
@@ -66,7 +66,7 @@ public class Customer {
         itemList.put(item, 1);
     }
 
-    public long getBonusPoints() {
+    public int getBonusPoints() {
         if(membership.isActive()) {
             return bonusPoints;
         }
