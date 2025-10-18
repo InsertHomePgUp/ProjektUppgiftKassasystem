@@ -12,6 +12,7 @@ public class Customer {
     private final String name;
     private final HashMap<Item, Integer> itemList;
     private Membership membership;
+    private long bonusPoints;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
         this.name = Objects.requireNonNull(name);
@@ -67,7 +68,18 @@ public class Customer {
         itemList.put(item, 1);
     }
 
-    //lägga till poäng här
+    public long getBonusPoints() {
+        if(membership.isActive()) {
+            return bonusPoints;
+        }
+        return 0;
+    }
+
+    public void addOrSubtractBonusPoints(long bonusPoints) {
+        if(membership.isActive()) {
+            this.bonusPoints += bonusPoints;
+        }
+    }
 
     @Override
     public String toString() {

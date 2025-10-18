@@ -106,6 +106,51 @@ public class CustomerTest {
 
     }
 
+    @Nested
+    @DisplayName("Bonus points Tests")
+    class BonusPointsTests {
+        @Test
+        void getZeroBonusPointsTest() {
+            customer.setMembership(new TimeLimitedMembership());
+            assertEquals(0, customer.getBonusPoints());
+        }
+        @Test
+        void addBonusPointsTest() {
+            customer.setMembership(new TimeLimitedMembership());
+            assertEquals(0, customer.getBonusPoints());
+            customer.addOrSubtractBonusPoints(100);
+            assertEquals(100, customer.getBonusPoints());
+        }
+        @Test
+        void subtractBonusPointsTest() {
+            customer.setMembership(new TimeLimitedMembership());
+            customer.addOrSubtractBonusPoints(100);
+            assertEquals(100, customer.getBonusPoints());
+            customer.addOrSubtractBonusPoints(-10);
+            assertEquals(90, customer.getBonusPoints());
+        }
+        @Test
+        void getZeroBonusPointsAsDefaultTest() {
+            customer.setMembership(new TimeLimitedMembership());
+            assertEquals(0, customer.getBonusPoints());
+        }
+        @Test
+        void dontAddBonusPointsWithoutMembershipTest() {
+            customer.setMembership(new TimeLimitedMembership());
+            assertEquals(0, customer.getBonusPoints());
+            customer.addOrSubtractBonusPoints(100);
+            assertEquals(100, customer.getBonusPoints());
+        }
+        @Test
+        void dontSubtractBonusPointsWithoutMembershipTest() {
+            customer.setMembership(new TimeLimitedMembership());
+            customer.addOrSubtractBonusPoints(100);
+            assertEquals(100, customer.getBonusPoints());
+            customer.addOrSubtractBonusPoints(-10);
+            assertEquals(90, customer.getBonusPoints());
+        }
+    }
+
     @Test
     void toStringTest() {
         assertEquals("Name: Jane Doe, PID: 8907028631, Phone Number: 0700143541, Email: Jane@Doe.com", customer.toString());
