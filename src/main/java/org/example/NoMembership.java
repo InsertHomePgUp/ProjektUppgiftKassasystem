@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.HashMap;
 
-public class NoMembership implements Membership {
+public class NoMembership implements MembershipInterface {
 
     @Override
     public boolean isActive(){

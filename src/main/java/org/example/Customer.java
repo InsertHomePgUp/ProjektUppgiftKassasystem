@@ -11,7 +11,7 @@ public class Customer {
     private final String email;
     private final String name;
     private final HashMap<Item, Integer> itemList;
-    private Membership membership;
+    private MembershipInterface membership;
     private int bonusPoints;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
@@ -58,12 +58,12 @@ public class Customer {
 
     public void addItem(Item item) {
         for(Item i : itemList.keySet()) {
-            if (i.getName().equals(item.getName())) {
+            if (i.equals(item)) {
                 int x = itemList.get(i) + 1;
                 itemList.put(i, x);
             }
         }
-        itemList.put(item, 1);
+        itemList.putIfAbsent(item, 1);
     }
 
     public int getBonusPoints() {

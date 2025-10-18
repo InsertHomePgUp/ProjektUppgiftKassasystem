@@ -25,7 +25,7 @@ public class MembershipTest {
 
         @Test
         void testIfMembershipCanBeAdded() {
-            Membership membership = new TimeLimitedMembership();
+            Membership membership = new Membership();
             customer.setMembership(membership);
             assertTrue(customer.isMember());
         }

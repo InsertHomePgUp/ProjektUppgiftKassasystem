@@ -2,10 +2,31 @@ package org.example;
 
 import java.util.HashMap;
 
-public interface Membership {
-    boolean isActive();
-    HashMap<Item, Double> getDiscounts();
-    boolean addDiscountRate(Item item, double discountRate);
-    String description();
-    void setDescription(String description);
+public class Membership implements MembershipInterface {
+
+    private final HashMap<Item,Double> discountedItems = new HashMap<>();
+    @Override
+    public boolean isActive(){
+        return true;
+    };
+
+    @Override
+    public HashMap<Item, Double> getDiscounts(){
+        return discountedItems;
+    };
+
+    @Override
+    public boolean addDiscountRate(Item item, double discountRate){
+        discountedItems.put(item,discountRate);
+        return true;
+    };
+
+    @Override
+    public String description(){
+        return "Time limited.";
+    };
+
+    @Override
+    public void setDescription(String description){
+    };
 }

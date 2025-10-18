@@ -5,9 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerTest {
@@ -92,7 +89,9 @@ public class CustomerTest {
 
         @Test
         void addItemTest() {
-            assertTrue(true);
+            customer.addItem(banana);
+            assertEquals(1, customer.getItemList().size());
+            assertTrue(customer.getItemList().containsKey(banana));
         }
         @Test
         void changingReturnedListTest() {
@@ -101,7 +100,16 @@ public class CustomerTest {
 
         @Test
         void addingDuplicateItemTest() {
-            assertTrue(true);
+            customer.addItem(banana);
+            customer.addItem(banana);
+            customer.addItem(banana);
+            customer.addItem(banana);
+            customer.addItem(banana1);
+            assertEquals(2, customer.getItemList().size());
+            assertTrue(customer.getItemList().containsKey(banana));
+            assertTrue(customer.getItemList().containsKey(banana1));
+            assertEquals(4, customer.getItemList().get(banana));
+            assertEquals(1, customer.getItemList().get(banana1));
         }
 
     }
@@ -111,19 +119,19 @@ public class CustomerTest {
     class BonusPointsTests {
         @Test
         void getZeroBonusPointsTest() {
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             assertEquals(0, customer.getBonusPoints());
         }
         @Test
         void addBonusPointsTest() {
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             assertEquals(0, customer.getBonusPoints());
             customer.addOrSubtractBonusPoints(100);
             assertEquals(100, customer.getBonusPoints());
         }
         @Test
         void subtractBonusPointsTest() {
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             customer.addOrSubtractBonusPoints(100);
             assertEquals(100, customer.getBonusPoints());
             customer.addOrSubtractBonusPoints(-10);
@@ -131,19 +139,19 @@ public class CustomerTest {
         }
         @Test
         void getZeroBonusPointsAsDefaultTest() {
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             assertEquals(0, customer.getBonusPoints());
         }
         @Test
         void dontAddBonusPointsWithoutMembershipTest() {
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             assertEquals(0, customer.getBonusPoints());
             customer.addOrSubtractBonusPoints(100);
             assertEquals(100, customer.getBonusPoints());
         }
         @Test
         void dontSubtractBonusPointsWithoutMembershipTest() {
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             customer.addOrSubtractBonusPoints(100);
             assertEquals(100, customer.getBonusPoints());
             customer.addOrSubtractBonusPoints(-10);
@@ -153,7 +161,7 @@ public class CustomerTest {
         void addingWithAndWithoutMembershipTest(){
             customer.addOrSubtractBonusPoints(100);
             assertEquals(0, customer.getBonusPoints());
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             customer.addOrSubtractBonusPoints(100);
             assertEquals(100, customer.getBonusPoints());
         }
@@ -161,7 +169,7 @@ public class CustomerTest {
         void addingAndSubtractingRepeatedly() {
             customer.addOrSubtractBonusPoints(100);
             assertEquals(0, customer.getBonusPoints());
-            customer.setMembership(new TimeLimitedMembership());
+            customer.setMembership(new Membership());
             customer.addOrSubtractBonusPoints(100);
             customer.addOrSubtractBonusPoints(-99);
             customer.addOrSubtractBonusPoints(-1);
