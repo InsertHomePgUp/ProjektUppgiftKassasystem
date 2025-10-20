@@ -38,7 +38,6 @@ class CurrencyTest {
 
     @Test
     void testCompareTo() {
-        // "Euro" < "US Dollar" alphabetically
         assertTrue(eur.compareTo(usd) < 0);
         assertTrue(usd.compareTo(eur) > 0);
         assertEquals(0, usd.compareTo(anotherUsd));
@@ -53,7 +52,6 @@ class CurrencyTest {
     @Test
     void testDifferentCurrenciesNotEqualByReference() {
         assertNotSame(usd, anotherUsd);
-        // They have same field values but are different objects
         assertArrayEquals(usd.getDenominations(), anotherUsd.getDenominations());
         assertEquals(usd.name, anotherUsd.name);
         assertEquals(usd.symbol, anotherUsd.symbol);
