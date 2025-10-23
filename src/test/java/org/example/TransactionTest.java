@@ -14,6 +14,11 @@ public class TransactionTest {
         return SEK;
     }
 
+    public Customer createCustomer(){
+        Customer customer = new Customer("John Smith", "000701-1234", "0701234567", "abc@123.se");
+        return customer;
+    }
+
     public List<Item> createItems(){
         List<Item> items = new ArrayList<>();
         Currency SEK = createSEK();

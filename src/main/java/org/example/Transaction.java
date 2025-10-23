@@ -8,11 +8,13 @@ public class Transaction {
     private List<Item> items;
     private List <Deductor> deductors;
     private boolean paid;
+    private Customer customer;
 
-    public Transaction(List<Item> items, List<Deductor> deductors){
+    public Transaction(List<Item> items, List<Deductor> deductors, Customer customer){
         this.items = items;
         this.deductors = deductors;
         this.paid = false;
+        this.customer = customer;
     }
 
     public double getTotalPrice(){
@@ -30,6 +32,12 @@ public class Transaction {
 
                 case("Bonuscheck"):
                     totalPrice -= deductor.getAmount()*100;
+                    if (deductor.getAmount() <= totalPrice){
+                        customer.addOrSubtractBonusPoints(-(long)deductor.getAmount());
+                    }else {
+                        customer.addOrSubtractBonusPoints((long)totalPrice);
+                    }
+                    customer.addOrSubtractBonusPoints(-(long)deductor.getAmount());
                     break;
 
                 case("Rabatt"):
