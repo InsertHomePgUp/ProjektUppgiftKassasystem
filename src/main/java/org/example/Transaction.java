@@ -53,6 +53,7 @@ public class Transaction {
     }
 
     public void payWithCard(){
+        customer.addOrSubtractBonusPoints((long)getTotalPrice() / 100);
         paid = true;
     }
 
@@ -96,6 +97,7 @@ public class Transaction {
             }
 
             paid = true;
+            customer.addOrSubtractBonusPoints((long)getTotalPrice() / 100);
             return change;
         }
 
@@ -126,8 +128,4 @@ public class Transaction {
             throw new IllegalStateException("Betala för att få kvittot");
         }
     }
-
-    //ta bort varor från inventory metod
-
-    //
 }

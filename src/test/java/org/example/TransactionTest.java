@@ -58,12 +58,12 @@ public class TransactionTest {
 
     @Test
     public void createTransaction(){
-        Transaction t = new Transaction(createItems(), createDeductors());
+        Transaction t = new Transaction(createItems(), createDeductors(), createCustomer());
     }
 
     @Test
     public void createReceipt(){
-        Transaction t = new Transaction(createItems(), createDeductors());
+        Transaction t = new Transaction(createItems(), createDeductors(), createCustomer());
         t.payWithCard();
         t.getReceipt();
     }
@@ -72,19 +72,19 @@ public class TransactionTest {
     public void correctTotalWithoutDeductors(){
         Currency SEK = createSEK();
         List<Deductor> emptyList = new ArrayList<Deductor>();
-        Transaction t = new Transaction(createItems(), emptyList);
+        Transaction t = new Transaction(createItems(), emptyList, createCustomer());
         assertEquals(111.25, t.getTotalPrice());
     }
     @Test
     public void correctTotalWithDeductors(){
         Currency SEK = createSEK();
-        Transaction t = new Transaction(createItems(), createDeductors());
+        Transaction t = new Transaction(createItems(), createDeductors(), createCustomer());
         assertEquals(49, t.getTotalPrice());
     }
 
     @Test
     public void receiptContainsAll(){
-        Transaction t = new Transaction(createItems(), createDeductors());
+        Transaction t = new Transaction(createItems(), createDeductors(), createCustomer());
         t.payWithCard();
         assertEquals("Tomato   6,25 kr\n" +
                 "Cucumber   10,00 kr\n" +
@@ -104,7 +104,7 @@ public class TransactionTest {
         moneyToAdd.add(20);
         moneyToAdd.add(20);
         CashRegister register = new CashRegister(moneyToAdd);
-        Transaction t = new Transaction(createItems(), createDeductors());
+        Transaction t = new Transaction(createItems(), createDeductors(), createCustomer());
         assertEquals(new ArrayList<>().toString() , t.payWithCash(register, moneyToAdd).toString());
     }
 
@@ -124,7 +124,7 @@ public class TransactionTest {
         expectedChange.add(1);
 
         CashRegister register = new CashRegister(moneyToAdd);
-        Transaction t = new Transaction(createItems(), createDeductors());
+        Transaction t = new Transaction(createItems(), createDeductors(), createCustomer());
 
         assertEquals(expectedChange.toString() , t.payWithCash(register, customerPaysWith).toString());
     }
@@ -132,7 +132,7 @@ public class TransactionTest {
     @Test
     public void receiptWithoutPaying(){
         Currency SEK = createSEK();
-        Transaction t = new Transaction(createItems(), createDeductors());
+        Transaction t = new Transaction(createItems(), createDeductors(), createCustomer());
         assertThrows(IllegalStateException.class, t::getReceipt);
     }
 
@@ -142,7 +142,7 @@ public class TransactionTest {
         Deductor Bonuscheck100 = new Deductor(100, "Bonuscheck");
         deductors.add(Bonuscheck100);
         Currency SEK = createSEK();
-        Transaction t = new Transaction(createItems(), deductors);
+        Transaction t = new Transaction(createItems(), deductors, createCustomer());
         assertEquals(11.25, t.getTotalPrice());
     }
 }

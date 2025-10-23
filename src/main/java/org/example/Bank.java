@@ -8,7 +8,7 @@ public class Bank {
 	private Map<Currency, Double> conversionRates;
 
 	private Map<String, Currency> currencySet;
-	
+
 	private final Currency baseCurrancy = new Currency("Svenska kronor", "kr", 100000, 50000, 10000, 5000, 2000, 1000, 500, 100, 1);
 
 	public Bank() {
@@ -60,7 +60,7 @@ public class Bank {
 	public Money exchange(Money money, Currency newCurrency) {
 
 		Currency previousCurrency = money.getCurrency();
-		
+
 		if (!conversionRates.containsKey(previousCurrency)) {
 			throw new IllegalArgumentException(
 					"No conversion rate found for " + previousCurrency);
@@ -70,7 +70,7 @@ public class Bank {
 			throw new IllegalArgumentException(
 					"No conversion rate for " + newCurrency + " found");
 		}
-		
+
 
 		double rate = this.getConversionRate(previousCurrency, newCurrency);
 		Money moneyInNewCurrency = new Money(newCurrency, (long) (money.getAmountInMinorUnit() * rate));
