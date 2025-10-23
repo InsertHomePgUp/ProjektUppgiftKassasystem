@@ -72,7 +72,7 @@ public class Customer {
         }
         return 0;
     }
-
+//hej
     public void addOrSubtractBonusPoints(long bonusPoints) {
         if(membership.isActive()) {
             if(this.bonusPoints + bonusPoints < 0) {
