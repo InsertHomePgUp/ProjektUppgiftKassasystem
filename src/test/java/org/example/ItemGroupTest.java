@@ -14,10 +14,8 @@ public class ItemGroupTest {
 
     @BeforeEach
     void createTestData() {
-        Currency currency = new Currency("Svenska kronor", "SEK",
-                100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
-        price = new Money(currency, 10000);
-        Money deposit = new Money(currency, 200);
+        price = new Money(SEK.instance, 10000);
+        Money deposit = new Money(SEK.instance, 200);
         itemGroup = new ItemGroup("TestItemGroup");
         itemType = new ItemType("TestItemType", 15.0, deposit, 0);
     }

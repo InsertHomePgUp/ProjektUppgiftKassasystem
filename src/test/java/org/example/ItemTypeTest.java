@@ -6,15 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ItemTypeTest {
 
-    private Currency currency;
     private Money deposit;
     private final String testItemTypeName = "ItemTypeName";
 
     @BeforeEach
     void createMoneyAndCurrency() {
-        currency = new Currency("Svenska kronor", "kr",
-                100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
-        deposit = new Money(currency, 200);
+        deposit = new Money(SEK.instance, 200);
     }
 
     @Test
@@ -43,7 +40,7 @@ public class ItemTypeTest {
 
     @Test
     void depositIsNotNegative() {
-        Money negativeDeposit = new Money(currency, -2);
+        Money negativeDeposit = new Money(SEK.instance, -2);
         assertThrows(IllegalArgumentException.class, () -> new ItemType(testItemTypeName, 15.0, negativeDeposit, 0));
     }
 
