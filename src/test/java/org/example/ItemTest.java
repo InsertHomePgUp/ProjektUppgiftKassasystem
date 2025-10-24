@@ -32,46 +32,34 @@ public class ItemTest {
 
     @Test
     void cannotCreateItemWithoutName() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item("", itemType, price);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item("", itemType, price));
     }
 
     @Test
     void cannotCreateItemWithNullName() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(null,itemType, price);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(null,itemType, price));
     }
 
     @Test
     void cannotCreateItemWithNullItemType() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, null, price);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, null, price));
     }
 
     @Test
     void cannotCreateItemWithNullPrice() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, itemType, null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, null));
     }
 
     @Test
     void cannotCreateItemThatCostNothing() {
         Money priceIsZero = new Money(currency, 0);
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, itemType, priceIsZero);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, priceIsZero));
     }
 
     @Test
     void cannotCreateItemWithNegativePrice() {
         Money negativePrice = new Money(currency, -500);
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, itemType, negativePrice);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, negativePrice));
     }
 
     @Test
@@ -108,4 +96,5 @@ public class ItemTest {
         assertEquals("TestItem, TestItemType, 100,00 kr", itemOne.toString());
         assertEquals("TestItem, TestItemType, 12,50 kr", itemTwo.toString());
     }
+
 }
