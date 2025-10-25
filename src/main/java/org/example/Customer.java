@@ -23,17 +23,53 @@ public class Customer {
         if (personalIdentityNumber.trim().isEmpty()) {
             throw new IllegalArgumentException("Personal identity number cannot be empty");
         }
-        this.phoneNumber = Objects.requireNonNull(phoneNumber);
-        if (phoneNumber.trim().isEmpty()) {
+        this.phoneNumber = Objects.requireNonNull(phoneNumber).trim();
+        if (phoneNumber.isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be empty");
+        }
+        if (!phoneNumberChecker(phoneNumber)) {
+            throw new IllegalArgumentException("Phone number is not valid");
         }
         this.email = Objects.requireNonNull(email);
         if (email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
-
         this.itemList = new HashMap<Item, Integer>();
         this.membership = new NoMembership();
+    }
+    private boolean phoneNumberChecker(String phoneNumber) {
+        char[] charArray = phoneNumber.toCharArray();
+        if (charArray.length <= 16 && charArray.length >= 9) {
+            if (charArray[0] == '+' && charArray[1] != '0') {
+                for (int i = 1; i < charArray.length; i++) {
+                    if (!Character.isDigit(charArray[i])) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        if (charArray.length <= 15 && charArray.length >= 8) {
+            if (Character.isDigit(charArray[0]) && charArray[0] != '0') {
+                for (char c : charArray) {
+                    if (!Character.isDigit(c)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        if (charArray.length <= 14 && charArray.length >= 7) {
+            if (charArray[0] == '0' && charArray[1] != '0') {
+                for (char c : charArray) {
+                    if(!Character.isDigit(c)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getPersonalIdentityNumber() {return personalIdentityNumber;}
