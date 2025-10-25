@@ -37,7 +37,7 @@ public class Transaction {
                     //om antalet bonuspoäng är mindre än totalet
                     if (deductor.getAmount()*100 <= totalPriceInMinorUnit){
                         totalPriceInMinorUnit -= deductor.getAmount()*100;
-                        customer.addOrSubtractBonusPoints(-(long)deductor.getAmount());
+                        customer.addOrSubtractBonusPoints(-(long)deductor.getAmount()*100);
                     //om man har mer bonuspoäng än kostnaden, alltså att man har poäng över
                     }else {
                         customer.addOrSubtractBonusPoints(-(long)totalPriceInMinorUnit);
