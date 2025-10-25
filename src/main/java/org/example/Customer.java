@@ -12,7 +12,7 @@ public class Customer {
     private final String name;
     private final HashMap<Item, Integer> itemList;
     private MembershipInterface membership;
-    private int bonusPoints;
+    private long bonusPoints;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
         this.name = Objects.requireNonNull(name);
@@ -66,7 +66,7 @@ public class Customer {
         itemList.putIfAbsent(item, 1);
     }
 
-    public int getBonusPoints() {
+    public long getBonusPoints() {
         if(membership.isActive()) {
             return bonusPoints;
         }
@@ -78,9 +78,13 @@ public class Customer {
             if(this.bonusPoints + bonusPoints < 0) {
                 this.bonusPoints = 0;
             } else {
-                this.bonusPoints += bonusPoints;
+                this.bonusPoints += (int) bonusPoints;
             }
         }
+    }
+
+    public double bonusPointsToMoney() {
+        return getBonusPoints()/100;
     }
 
     @Override
