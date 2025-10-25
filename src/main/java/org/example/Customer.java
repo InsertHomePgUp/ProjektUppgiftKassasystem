@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -37,6 +36,7 @@ public class Customer {
         this.itemList = new HashMap<Item, Integer>();
         this.membership = new NoMembership();
     }
+
     private boolean phoneNumberChecker(String phoneNumber) {
         char[] charArray = phoneNumber.toCharArray();
         if (charArray.length <= 16 && charArray.length >= 9) {
@@ -67,6 +67,36 @@ public class Customer {
                     }
                 }
                 return true;
+            }
+        }
+        return false;
+    }
+
+
+    private boolean pIDChecker(String pID) {
+        int total = 0;
+        char[] charArray = pID.toCharArray();
+        if (charArray.length == 11 && (charArray[6] == '+' || charArray[6] == '-')) {
+            pID = pID.replaceAll("[-+]", "");
+            charArray = pID.toCharArray();
+            if(!pID.chars().allMatch(Character::isDigit)) return false;
+            if(charArray.length == 10) {
+                for (int i = 0; i < charArray.length-1; i++) {
+                    if (i % 2 == 1) {
+                        total += (charArray[i] - '0');
+                    } else {
+                        int d = (charArray[i] - '0')*2;
+                        String s = String.valueOf(d);
+                        if(s.length() == 2) {
+                            int t = (s.charAt(0)-'0') + (s.charAt(1)-'0');
+                            total += t;
+                        } else {
+                            total += (charArray[i] - '0')*2;
+                        }
+                    }
+                }
+                int x = 10 - (total % 10);
+                return ((charArray[9] - '0') == x);
             }
         }
         return false;
