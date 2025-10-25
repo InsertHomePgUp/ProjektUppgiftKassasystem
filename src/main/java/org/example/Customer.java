@@ -18,10 +18,15 @@ public class Customer {
         if (name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
-        this.personalIdentityNumber = Objects.requireNonNull(personalIdentityNumber);
-        if (personalIdentityNumber.trim().isEmpty()) {
+
+        this.personalIdentityNumber = Objects.requireNonNull(personalIdentityNumber).trim();
+        if (personalIdentityNumber.isEmpty()) {
             throw new IllegalArgumentException("Personal identity number cannot be empty");
         }
+        if (!pIDChecker(personalIdentityNumber)) {
+            throw new IllegalArgumentException("Invalid personal identity number");
+        }
+
         this.phoneNumber = Objects.requireNonNull(phoneNumber).trim();
         if (phoneNumber.isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be empty");
@@ -29,6 +34,7 @@ public class Customer {
         if (!phoneNumberChecker(phoneNumber)) {
             throw new IllegalArgumentException("Phone number is not valid");
         }
+
         this.email = Objects.requireNonNull(email);
         if (email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
@@ -71,7 +77,6 @@ public class Customer {
         }
         return false;
     }
-
 
     private boolean pIDChecker(String pID) {
         int total = 0;
