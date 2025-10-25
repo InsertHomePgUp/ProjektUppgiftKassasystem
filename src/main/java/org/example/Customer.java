@@ -84,7 +84,7 @@ public class Customer {
     }
 
     public double bonusPointsToMoney() {
-        return getBonusPoints()/100;
+        return (double) getBonusPoints() /100;
     }
 
     @Override
