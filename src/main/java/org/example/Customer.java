@@ -78,13 +78,13 @@ public class Customer {
             if(this.bonusPoints + bonusPoints < 0) {
                 this.bonusPoints = 0;
             } else {
-                this.bonusPoints += (int) bonusPoints;
+                this.bonusPoints += bonusPoints;
             }
         }
     }
 
     public double bonusPointsToMoney() {
-        return (double) getBonusPoints() /100;
+        return (double) getBonusPoints() /100; //ger i kr
     }
 
     @Override

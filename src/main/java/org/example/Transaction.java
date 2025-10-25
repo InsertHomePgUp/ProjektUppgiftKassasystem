@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Transaction {
 
-    private double totalPrice;
+    private double totalPriceInMinorUnit;
     private List<Item> items;
     private List <Deductor> deductors;
     private boolean paid;
@@ -19,29 +19,34 @@ public class Transaction {
 
     public double getTotalPrice(){
 
-        totalPrice = 0;
+        totalPriceInMinorUnit = 0;
 
         for (Item item : items){
-            totalPrice += item.getPrice().getAmountInMinorUnit();
+            totalPriceInMinorUnit += item.getPrice().getAmountInMinorUnit();
         }
+
         for (Deductor deductor : deductors){
             switch (deductor.getType()){
+
                 case("Presentkort"):
-                    totalPrice -= deductor.getAmount()*100;
+                    totalPriceInMinorUnit -= deductor.getAmount()*100;
                     break;
 
                 case("Bonuscheck"):
-                    totalPrice -= deductor.getAmount()*100;
-                    if (deductor.getAmount() <= totalPrice){
+                    //totalPriceInMinorUnit -= deductor.getAmount()*100;
+                    //om antalet bonuspoäng är mindre än totalet
+                    if (deductor.getAmount()*100 <= totalPriceInMinorUnit){
+                        totalPriceInMinorUnit -= deductor.getAmount()*100;
                         customer.addOrSubtractBonusPoints(-(long)deductor.getAmount());
+                    //om man har mer bonuspoäng än kostnaden, alltså att man har poäng över
                     }else {
-                        customer.addOrSubtractBonusPoints((long)totalPrice);
+                        customer.addOrSubtractBonusPoints(-(long)totalPriceInMinorUnit);
+                        totalPriceInMinorUnit = 0;
                     }
-                    customer.addOrSubtractBonusPoints(-(long)deductor.getAmount());
                     break;
 
                 case("Rabatt"):
-                    totalPrice -= totalPrice * (deductor.getAmount() * 0.01);
+                    totalPriceInMinorUnit -= totalPriceInMinorUnit * (deductor.getAmount() * 0.01);
                     break;
 
                 default:
@@ -49,7 +54,8 @@ public class Transaction {
             }
         }
         //if totalprice < 0 --> totalprice == 0
-        return totalPrice / 100;
+        customer.addOrSubtractBonusPoints((long)totalPriceInMinorUnit/100);
+        return totalPriceInMinorUnit / 100;
     }
 
     public void payWithCard(){
