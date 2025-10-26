@@ -8,6 +8,7 @@ public class ShoppingCartTest {
 
     Currency currency;
     Money deposit;
+    private Scanner mockScanner;
 
     @BeforeEach
     void createCurrency(){
@@ -18,7 +19,7 @@ public class ShoppingCartTest {
 
     @Test
     public void addItemsTest(){
-        ShoppingCart s = new ShoppingCart();
+        ShoppingCart s = new ShoppingCart(mockScanner);
 
         Money cheesePrice = new Money(currency, 8000);
         Money tomatoPrice = new Money(currency, 625);
@@ -42,7 +43,7 @@ public class ShoppingCartTest {
 
     @Test
     public void removeItemsTest(){
-        ShoppingCart s = new ShoppingCart();
+        ShoppingCart s = new ShoppingCart(mockScanner);
 
         Money cheesePrice = new Money(currency, 8000);
         Money tomatoPrice = new Money(currency, 625);
@@ -67,7 +68,7 @@ public class ShoppingCartTest {
 
     @Test
     public void removeItemsInEmptyCart(){
-        ShoppingCart s = new ShoppingCart();
+        ShoppingCart s = new ShoppingCart(mockScanner);
         Money hamPrice = new Money(currency, 625);
         Item ham = new Item("ham",
                 new ItemType("chark", 0.25, deposit, 0),
