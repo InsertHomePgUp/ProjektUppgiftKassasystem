@@ -8,6 +8,24 @@ public class MockScanner {
     private final Map<String, Item> itemByCode = new HashMap<>();
 
     public MockScanner() {
+        createAndAddItemsToMap();
+    }
+
+    public Item scanBarcode(String barcode) {
+        if(barcode == null || barcode.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        Item item = itemByCode.get(barcode);
+
+        if(item == null) {
+            throw new IllegalArgumentException("Barcode " + barcode + " is not in database");
+        }
+
+        return item;
+    }
+
+    private void createAndAddItemsToMap() {
         ItemType alcohol = new ItemType("Alcohol", 15.0, new Money(SEK.instance, 100), 18);
         Item beer = new Item("Beer", alcohol, new Money(SEK.instance, 2000));
         Item cider = new Item("Cider", alcohol, new Money(SEK.instance, 2200));
@@ -27,20 +45,5 @@ public class MockScanner {
         itemByCode.put("4", redBull);
         itemByCode.put("5", cocaCola);
         itemByCode.put("6", sprite);
-
-    }
-
-    public Item scanBarcode(String barcode) {
-        if(barcode == null || barcode.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-
-        Item item = itemByCode.get(barcode);
-
-        if(item == null) {
-            throw new IllegalArgumentException("Barcode " + barcode + " is not in database");
-        }
-
-        return item;
     }
 }
