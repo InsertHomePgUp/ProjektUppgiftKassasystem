@@ -10,19 +10,22 @@ public class ShoppingCartWithMockitoTest {
 
     private ShoppingCart shoppingCart;
     private Scanner mockScanner;
+    private Item beer;
+    private Item cider;
 
 
     @BeforeEach
     void createObjects() {
         mockScanner = mock(Scanner.class);
         shoppingCart = new ShoppingCart(mockScanner);
+        ItemType alcohol = new ItemType("Alcohol", 15.0, new Money(SEK.instance, 100), 18);
+        beer = new Item("Beer", alcohol, new Money(SEK.instance, 2000));
+        cider = new Item("Cider", alcohol, new Money(SEK.instance, 2300));
     }
 
     @Test
     void addItem() {
-        //Skapar items
-        ItemType alcohol = new ItemType("Alcohol", 15.0, new Money(SEK.instance, 100), 18);
-        Item beer = new Item("Beer", alcohol, new Money(SEK.instance, 2000));
+        //Skapar items i BeforeEach
 
         //Sätter beteende
         when(mockScanner.scanBarcode("1")).thenReturn(beer);
@@ -38,36 +41,24 @@ public class ShoppingCartWithMockitoTest {
 
     @Test
     void addMultipleItems() {
-        //Skapar items
-        ItemType alcohol = new ItemType("Alcohol", 15.0, new Money(SEK.instance, 100), 18);
-        Item beer = new Item("Beer", alcohol, new Money(SEK.instance, 2000));
-        Item cider = new Item("Cider", alcohol, new Money(SEK.instance, 2300));
-
-        //Sätter beteende
         when(mockScanner.scanBarcode("1")).thenReturn(beer);
         when(mockScanner.scanBarcode("2")).thenReturn(cider);
 
-        //Utför
         shoppingCart.scanAndAdd("1");
         shoppingCart.scanAndAdd("2");
 
-        //Kontroll
         assertEquals(2, shoppingCart.viewCart().size());
         assertEquals("Beer", shoppingCart.viewCart().get(0).getName());
         assertEquals("Cider", shoppingCart.viewCart().get(1).getName());
-        verify(mockScanner, times(2)).scanBarcode(anyString());
+        verify(mockScanner, times(1)).scanBarcode("1");
+        verify(mockScanner, times(1)).scanBarcode("2");
     }
 
     @Test
     void addDuplicateItems() {
-        //Skapar items
-        ItemType alcohol = new ItemType("Alcohol", 15.0, new Money(SEK.instance, 100), 18);
-        Item beer = new Item("Beer", alcohol, new Money(SEK.instance, 2000));
-
         when(mockScanner.scanBarcode("1")).thenReturn(beer);
         shoppingCart.scanAndAdd("1");
         shoppingCart.scanAndAdd("1");
-
 
         assertEquals(2, shoppingCart.viewCart().size());
         assertEquals("Beer", shoppingCart.viewCart().get(0).getName());
@@ -77,31 +68,21 @@ public class ShoppingCartWithMockitoTest {
 
     @Test
     void removeItemFromCart() {
-        //Skapar items
-        ItemType alcohol = new ItemType("Alcohol", 15.0, new Money(SEK.instance, 100), 18);
-        Item beer = new Item("Beer", alcohol, new Money(SEK.instance, 2000));
-
         when(mockScanner.scanBarcode("1")).thenReturn(beer);
         shoppingCart.scanAndAdd("1");
 
         shoppingCart.scanAndRemove("1");
 
         assertEquals(0, shoppingCart.viewCart().size());
-
     }
 
     @Test
     void removingItemThatIsNotInCartThrowsException() {
-        ItemType alcohol = new ItemType("Alcohol", 15.0, new Money(SEK.instance, 100), 18);
-        Item beer = new Item("Beer", alcohol, new Money(SEK.instance, 2000));
-
         when(mockScanner.scanBarcode("1")).thenReturn(beer);
 
         assertThrows(IllegalArgumentException.class, () -> shoppingCart.scanAndRemove("1"));
 
         verify(mockScanner, times(1)).scanBarcode("1");
-
-
     }
 
     @Test
@@ -115,7 +96,6 @@ public class ShoppingCartWithMockitoTest {
 
     @Test
     void emptyBarcodeThrowsException() {
-
         when(mockScanner.scanBarcode("")).thenThrow(new IllegalArgumentException("Barcode cannot be empty"));
 
         assertThrows(IllegalArgumentException.class, () -> shoppingCart.scanAndAdd(""));
