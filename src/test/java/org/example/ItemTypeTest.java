@@ -6,20 +6,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ItemTypeTest {
 
-    private Currency currency;
     private Money deposit;
+    private final String testItemTypeName = "ItemTypeName";
 
     @BeforeEach
     void createMoneyAndCurrency() {
-        currency = new Currency("Svenska kronor", "kr",
-                100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
-        deposit = new Money(currency, 200);
+        deposit = new Money(SEK.instance, 200);
     }
 
     @Test
     void constructorTest() {
-        ItemType test = new ItemType("ItemTypeName", 15.0, deposit, 15);
-        assertEquals("ItemTypeName", test.getName());
+        ItemType test = new ItemType(testItemTypeName, 15.0, deposit, 15);
+        assertEquals(testItemTypeName, test.getName());
         assertEquals(0.15, test.getTaxRate());
         assertEquals(2, test.getDeposit().getAmountInMajorUnit());
         assertEquals(15, test.getAgeLimit());
@@ -27,37 +25,33 @@ public class ItemTypeTest {
 
     @Test
     void cannotCreateItemTypeWithoutName() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType("", 15.0, deposit, 0);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new ItemType("", 15.0, deposit, 0));
     }
 
     @Test
     void cannotCreateItemTypeWithNullName() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType(null, 15.0, deposit ,0);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new ItemType(null, 15.0, deposit ,0));
     }
 
     @Test
     void taxRateIsNotNegative() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType("ItemTypeName", -5.0, deposit, 0);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new ItemType(testItemTypeName, -5.0, deposit, 0));
     }
 
     @Test
     void depositIsNotNegative() {
-        Money negativeDeposit = new Money(currency, -2);
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType("ItemTypeName", 15.0, negativeDeposit, 0);
-        });
+        Money negativeDeposit = new Money(SEK.instance, -2);
+        assertThrows(IllegalArgumentException.class, () -> new ItemType(testItemTypeName, 15.0, negativeDeposit, 0));
     }
 
     @Test
     void ageLimitIsNotNegative() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ItemType("ItemTypeName", 15.0, deposit, -15);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new ItemType(testItemTypeName, 15.0, deposit, -15));
     }
+
+    @Test
+    void taxRateAbove100ThrowsException () {
+        assertThrows(IllegalArgumentException.class, () -> new ItemType(testItemTypeName, 100.0, deposit, 0));
+    }
+
 }

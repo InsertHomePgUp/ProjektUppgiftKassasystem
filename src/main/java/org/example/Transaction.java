@@ -8,11 +8,18 @@ public class Transaction {
     private List<Item> items;
     private List <Deductor> deductors;
     private boolean paid;
+    private Customer customer;
+    private long minorUnitConversion = 100;
 
-    public Transaction(List<Item> items, List<Deductor> deductors){
+    public Transaction(List<Item> items, List<Deductor> deductors, Customer customer){
         this.items = items;
         this.deductors = deductors;
         this.paid = false;
+        this.customer = customer;
+    }
+
+    public boolean isPaid(){
+        return this.paid;
     }
 
     public double getTotalPrice(){
@@ -25,11 +32,9 @@ public class Transaction {
         for (Deductor deductor : deductors){
             switch (deductor.getType()){
                 case("Presentkort"):
-                    totalPrice -= deductor.getAmount()*100;
-                    break;
 
                 case("Bonuscheck"):
-                    totalPrice -= deductor.getAmount()*100;
+                    totalPrice -= deductor.getAmount()*minorUnitConversion;
                     break;
 
                 case("Rabatt"):
@@ -40,11 +45,53 @@ public class Transaction {
                         throw new IllegalArgumentException("Invalid deductor");
             }
         }
-        //if totalprice < 0 --> totalprice == 0
-        return totalPrice / 100;
+        if(totalPrice < 0){
+            totalPrice = 0;
+        }
+
+        return totalPrice / minorUnitConversion;
+    }
+
+    public void applyDeductors() {
+        totalPrice = 0;
+
+        for (Item item : items){
+            totalPrice += item.getPrice().getAmountInMinorUnit();
+        }
+        for (Deductor deductor : deductors) {
+            switch (deductor.getType()) {
+                case ("Presentkort"):
+                    if (totalPrice - deductor.getAmount() * minorUnitConversion < 0) {
+                        deductor.lowerAmount(totalPrice / minorUnitConversion);
+                        totalPrice = 0;
+                    } else {
+                        totalPrice -= deductor.getAmount() * minorUnitConversion;
+                        deductor.lowerAmount(deductor.getAmount());
+                    }
+                    break;
+
+                case ("Bonuscheck"):
+                    totalPrice -= deductor.getAmount() * minorUnitConversion;
+                    if (deductor.getAmount() <= totalPrice) {
+                        customer.addOrSubtractBonusPoints(-(long) deductor.getAmount());
+                    } else {
+                        customer.addOrSubtractBonusPoints((long) totalPrice);
+                    }
+                    customer.addOrSubtractBonusPoints(-(long) deductor.getAmount());
+                    break;
+
+                case ("Rabatt"):
+                    totalPrice -= totalPrice * (deductor.getAmount() * 0.01);
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Invalid deductor");
+            }
+        }
     }
 
     public void payWithCard(){
+        customer.addOrSubtractBonusPoints((long)getTotalPrice() / minorUnitConversion);
         paid = true;
     }
 
@@ -63,17 +110,18 @@ public class Transaction {
 
         } else if (getTotalPrice() < amountGiven) {
             register.addDenominators(denominators);
-            double amountOwed = amountGiven - getTotalPrice();
+
+            int amountOwed = (int)(amountGiven - getTotalPrice());
 
             List<Integer> sortedDenoms = new ArrayList<>(register.getInventory().keySet());
             Collections.sort(sortedDenoms, Collections.reverseOrder());
 
-            while (amountOwed > 0.0) {
+            while (amountOwed > 0) {
                 boolean gaveChange = false;
 
                 for (int denom : sortedDenoms) {
 
-                    if (denom <= amountOwed && register.getInventory().get(denom) > 0.0) {
+                    if (denom <= amountOwed && register.getInventory().get(denom) != null) {
                         register.removeDenominator(denom);
                         change.add(denom);
                         amountOwed -= denom;
@@ -88,10 +136,16 @@ public class Transaction {
             }
 
             paid = true;
+            customer.addOrSubtractBonusPoints((long)getTotalPrice() / minorUnitConversion);
             return change;
         }
 
         throw new IllegalArgumentException("Payment not sufficient");
+    }
+
+    public void makeCustomerMember(){
+        customer.setMembership(new Membership());
+        customer.addOrSubtractBonusPoints((long)getTotalPrice() / minorUnitConversion);
     }
 
     public StringBuilder getReceipt(){
@@ -118,8 +172,4 @@ public class Transaction {
             throw new IllegalStateException("Betala för att få kvittot");
         }
     }
-
-    //ta bort varor från inventory metod
-
-    //
 }

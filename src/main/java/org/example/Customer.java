@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -12,28 +11,100 @@ public class Customer {
     private final String name;
     private final HashMap<Item, Integer> itemList;
     private MembershipInterface membership;
-    private int bonusPoints;
+    private long bonusPoints;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
         this.name = Objects.requireNonNull(name);
         if (name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
-        this.personalIdentityNumber = Objects.requireNonNull(personalIdentityNumber);
-        if (personalIdentityNumber.trim().isEmpty()) {
+
+        this.personalIdentityNumber = Objects.requireNonNull(personalIdentityNumber).trim();
+        if (personalIdentityNumber.isEmpty()) {
             throw new IllegalArgumentException("Personal identity number cannot be empty");
         }
-        this.phoneNumber = Objects.requireNonNull(phoneNumber);
-        if (phoneNumber.trim().isEmpty()) {
+        if (!pIDChecker(personalIdentityNumber)) {
+            throw new IllegalArgumentException("Invalid personal identity number");
+        }
+
+        this.phoneNumber = Objects.requireNonNull(phoneNumber).trim();
+        if (phoneNumber.isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be empty");
         }
+        if (!phoneNumberChecker(phoneNumber)) {
+            throw new IllegalArgumentException("Phone number is not valid");
+        }
+
         this.email = Objects.requireNonNull(email);
         if (email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
-
         this.itemList = new HashMap<Item, Integer>();
         this.membership = new NoMembership();
+    }
+
+    private boolean phoneNumberChecker(String phoneNumber) {
+        char[] charArray = phoneNumber.toCharArray();
+        if (charArray.length <= 16 && charArray.length >= 9) {
+            if (charArray[0] == '+' && charArray[1] != '0') {
+                for (int i = 1; i < charArray.length; i++) {
+                    if (!Character.isDigit(charArray[i])) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        if (charArray.length <= 15 && charArray.length >= 8) {
+            if (Character.isDigit(charArray[0]) && charArray[0] != '0') {
+                for (char c : charArray) {
+                    if (!Character.isDigit(c)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        if (charArray.length <= 14 && charArray.length >= 7) {
+            if (charArray[0] == '0' && charArray[1] != '0') {
+                for (char c : charArray) {
+                    if(!Character.isDigit(c)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean pIDChecker(String pID) {
+        int total = 0;
+        char[] charArray = pID.toCharArray();
+        if (charArray.length == 11 && (charArray[6] == '+' || charArray[6] == '-')) {
+            pID = pID.replaceAll("[-+]", "");
+            charArray = pID.toCharArray();
+            if(!pID.chars().allMatch(Character::isDigit)) return false;
+            if(charArray.length == 10) {
+                for (int i = 0; i < charArray.length-1; i++) {
+                    if (i % 2 == 1) {
+                        total += (charArray[i] - '0');
+                    } else {
+                        int d = (charArray[i] - '0')*2;
+                        String s = String.valueOf(d);
+                        if(s.length() == 2) {
+                            int t = (s.charAt(0)-'0') + (s.charAt(1)-'0');
+                            total += t;
+                        } else {
+                            total += (charArray[i] - '0')*2;
+                        }
+                    }
+                }
+                int x = 10 - (total % 10);
+                return ((charArray[9] - '0') == x);
+            }
+        }
+        return false;
     }
 
     public String getPersonalIdentityNumber() {return personalIdentityNumber;}
@@ -66,7 +137,7 @@ public class Customer {
         itemList.putIfAbsent(item, 1);
     }
 
-    public int getBonusPoints() {
+    public long getBonusPoints() {
         if(membership.isActive()) {
             return bonusPoints;
         }
@@ -81,6 +152,10 @@ public class Customer {
                 this.bonusPoints += bonusPoints;
             }
         }
+    }
+
+    public double bonusPointsToMoney() {
+        return (double) getBonusPoints() /100; //ger i kr
     }
 
     @Override

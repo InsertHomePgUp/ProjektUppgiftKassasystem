@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ItemTest {
 
     private ItemType itemType;
-    private Currency currency;
     private Money price;
     private Money deposit;
     private final String testName = "TestItem";
@@ -15,10 +14,8 @@ public class ItemTest {
 
     @BeforeEach
     void createItemTypeAndMoney() {
-        currency = new Currency("Svenska kronor", "kr",
-                100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100);
-        price = new Money(currency, 10000);
-        deposit = new Money(currency, 200);
+        price = new Money(SEK.instance, 10000);
+        deposit = new Money(SEK.instance, 200);
         itemType = new ItemType("TestItemType", 15.0, deposit, 0);
     }
 
@@ -32,46 +29,34 @@ public class ItemTest {
 
     @Test
     void cannotCreateItemWithoutName() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item("", itemType, price);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item("", itemType, price));
     }
 
     @Test
     void cannotCreateItemWithNullName() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(null,itemType, price);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(null,itemType, price));
     }
 
     @Test
     void cannotCreateItemWithNullItemType() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, null, price);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, null, price));
     }
 
     @Test
     void cannotCreateItemWithNullPrice() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, itemType, null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, null));
     }
 
     @Test
     void cannotCreateItemThatCostNothing() {
-        Money priceIsZero = new Money(currency, 0);
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, itemType, priceIsZero);
-        });
+        Money priceIsZero = new Money(SEK.instance, 0);
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, priceIsZero));
     }
 
     @Test
     void cannotCreateItemWithNegativePrice() {
-        Money negativePrice = new Money(currency, -500);
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Item(testName, itemType, negativePrice);
-        });
+        Money negativePrice = new Money(SEK.instance, -500);
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, negativePrice));
     }
 
     @Test
@@ -104,8 +89,9 @@ public class ItemTest {
     @Test
     void toStringPrintsProperly() {
         Item itemOne = new Item(testName, itemType, price);
-        Item itemTwo = new Item(testName, itemType, new Money(currency, 1250));
+        Item itemTwo = new Item(testName, itemType, new Money(SEK.instance, 1250));
         assertEquals("TestItem, TestItemType, 100,00 kr", itemOne.toString());
         assertEquals("TestItem, TestItemType, 12,50 kr", itemTwo.toString());
     }
+
 }
