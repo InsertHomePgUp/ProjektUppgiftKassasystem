@@ -77,7 +77,6 @@ public class MoneyTest {
 	    @Test
 	    void testToStringWholeAmount() {
 	        Money m = new Money(usd, 1500L);
-	        // getRestAfterMajorUnit() = 0, so expect "15,00 $"
 	        assertEquals("15,00 " + usd.getSymbol(), m.toString());
 	    }
 
@@ -96,6 +95,35 @@ public class MoneyTest {
 	        assertEquals(500L, original.getAmountInMinorUnit());
 	        assertEquals(700L, modified.getAmountInMinorUnit());
 	    }
+	    
+	    @Test
+	    void testAddInMinorOverflow() {
+	    	Money original = new Money(usd, Long.MAX_VALUE);
+	        assertThrows(ArithmeticException.class, () -> original.addInMinor(100L));
+	    }
+	    
+	    @Test
+	    void testAddInMajorOverflow() {
+	    	Money original = new Money(usd, Long.MAX_VALUE);
+	        assertThrows(ArithmeticException.class, () -> original.addInMajor(100L));
+	    }
+	    
+	    @Test
+	    void testSubtractInMajorUnderflow() {
+	    	Money original = new Money(usd, Long.MIN_VALUE);
+	        assertThrows(ArithmeticException.class, () -> original.subtractInMajor(100L));
+	    }
+	    
+	    @Test
+	    void testSubtractSubtractInMinorUnderflow() {
+	    	Money original = new Money(usd, Long.MIN_VALUE);
+	        assertThrows(ArithmeticException.class, () -> original.subtractInMinor(100L));
+	    }
+	    
+	    
+
+	    
+	    
 	}
 
 

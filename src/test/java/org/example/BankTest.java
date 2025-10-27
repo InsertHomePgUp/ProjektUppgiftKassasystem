@@ -13,6 +13,7 @@ public class BankTest {
 	private Currency USD;
 	private Currency SEK;
 	private Currency euro;
+	private Currency unknownCurrency;
 
 	@BeforeEach
 	void setUp() {
@@ -21,6 +22,7 @@ public class BankTest {
 		USD = currencies.get("USD");
 		SEK = currencies.get("SEK");
 		euro = currencies.get("EURO");
+		unknownCurrency = new Currency("Danska Kronor", "DKR", 100, 50, 1);
 	}
 
 	@Test
@@ -35,63 +37,80 @@ public class BankTest {
 
 	@Test
 	public void testExchangeUSDtoSEKTest() {
+		
+		long ammountIn = 1000;
+		long expected = 10000;
 
-		Money moneyUSD = new Money(USD, 1000);
+		Money moneyUSD = new Money(USD, ammountIn);
 
 		Money moneySEK = bank.exchange(moneyUSD, SEK);
 
-		assertEquals(moneySEK.getAmountInMinorUnit(), 10000);
+		assertEquals(moneySEK.getAmountInMinorUnit(), expected);
 
 	}
 
 	@Test
 	public void testExchangeToSameCurrancy() {
+		
+		long ammountIn = 1000;
+		long expected = 1000;
 
-		Money swedishMoney = new Money(SEK, 1000);
+		Money swedishMoney = new Money(SEK, ammountIn);
 
 		Money newSwedishMoney = bank.exchange(swedishMoney, SEK);
 
-		assertEquals(newSwedishMoney.getAmountInMinorUnit(), 1000);
+		assertEquals(newSwedishMoney.getAmountInMinorUnit(), expected);
 
 	}
 
 	@Test
 	public void testExchangeToSameCurrancy2() {
+		
+		long ammountIn = 1000;
+		long expected = 1000;
 
-		Money moneyUSD = new Money(USD, 1000);
+		Money moneyUSD = new Money(USD, ammountIn);
 
 		Money newMoneyUSD = bank.exchange(moneyUSD, USD);
 
-		assertEquals(newMoneyUSD.getAmountInMinorUnit(), 1000);
+		assertEquals(newMoneyUSD.getAmountInMinorUnit(), expected);
 
 	}
 
 	@Test
 	public void exchangeSEKtoUSDTest() {
+		
+		long ammountIn = 1000;
+		long expected = 100;
 
-		Money swedishMoney = new Money(SEK, 1000);
+		Money swedishMoney = new Money(SEK, ammountIn);
 
 		Money USDollar = bank.exchange(swedishMoney, USD);
 
-		assertEquals(USDollar.getAmountInMinorUnit(), 100);
+		assertEquals(USDollar.getAmountInMinorUnit(), expected);
 
 	}
 
 	@Test
 	public void testExchangeUSDtoEuro() {
+		
+		long ammountIn = 1000;
+		long expected = 10000 / 11;
 
-		Money moneyUSD = new Money(USD, 1000);
+		Money moneyUSD = new Money(USD, ammountIn);
 
 		Money moneyEuro = bank.exchange(moneyUSD, euro);
 
-		assertEquals(moneyEuro.getAmountInMinorUnit(), 10000 / 11);
+		assertEquals(moneyEuro.getAmountInMinorUnit(), expected);
 
 	}
 
 	@Test
 	public void testExchangeUnkownCurrancyToSek() {
+		
+		long ammountIn = 1000;
 
-		Money UnknowMoney = new Money(new Currency("Danska Kronor", "DKR", 100, 50, 1), 1000);
+		Money UnknowMoney = new Money(unknownCurrency, ammountIn);
 		assertThrows(IllegalArgumentException.class, () -> bank.exchange(UnknowMoney, SEK),
 				"Expected exchange to throw, but it didn't");
 
@@ -99,8 +118,10 @@ public class BankTest {
 
 	@Test
 	public void testExchangeSEKtoUnknowCurrancy() {
+		
+		long ammountIn = 1000;
 
-		Money UnknowCurrancy = new Money(new Currency("Danska Kronor", "DKR", 100, 50, 1), 1000);
+		Money UnknowCurrancy = new Money(unknownCurrency, ammountIn);
 		assertThrows(IllegalArgumentException.class, () -> bank.exchange(UnknowCurrancy, SEK),
 				"Expected exchange to throw, but it didn't");
 

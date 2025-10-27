@@ -2,63 +2,91 @@ package org.example;
 
 public class Money {
 
-    private static final int MAJOR_UNIT = 100;
+	private static final int MAJOR_UNIT = 100;
 
-    private Currency currency;
-    private final long amountInMinorUnit;
+	private Currency currency;
+	private final long amountInMinorUnit;
 
-    public Money(Currency currency, long amountInMinorUnit) {
+	public Money(Currency currency, long amountInMinorUnit) {
         this.currency = currency;
-        this.amountInMinorUnit = amountInMinorUnit;
-    }
+		this.amountInMinorUnit = amountInMinorUnit;
+	}
 
-    public Currency getCurrency() {
-        return currency;
-    }
+	public Currency getCurrency() {
+		return currency;
+	}
 
-    public Money getNothing() {
-        return new Money(currency, 0L);
-    }
+	public Money getNothing() {
+		return new Money(currency, 0L);
+	}
 
-    public long getAmountInMinorUnit() {
-        return amountInMinorUnit;
-    }
+	public long getAmountInMinorUnit() {
+		return amountInMinorUnit;
+	}
 
-    private long getRestAfterMajorUnit() {
-        return amountInMinorUnit % MAJOR_UNIT;
-    }
+	private long getRestAfterMajorUnit() {
+		return amountInMinorUnit % MAJOR_UNIT;
+	}
 
-    public long getAmountInMajorUnit() {
-        return amountInMinorUnit / MAJOR_UNIT;
-    }
+	public long getAmountInMajorUnit() {
+		return amountInMinorUnit / MAJOR_UNIT;
+	}
 
-    public Money multiply(double factor) {
-        long newAmount = (long) (amountInMinorUnit * factor);
-        return new Money(currency, newAmount);
-    }
+	public Money multiply(double factor) {
+		long newAmmount = (long) (amountInMinorUnit * factor);
 
-    public Money addInMinor(long addedMinorUnits) {
-        return new Money(currency, amountInMinorUnit + addedMinorUnits);
-    }
+		return new Money(currency, newAmmount);
+	}
 
-    public Money addInMajor(long addedMajorUnits) {
-        return new Money(currency, amountInMinorUnit + addedMajorUnits * MAJOR_UNIT);
-    }
+	public Money addInMinor(long addedMinorUnits) {
 
-    public Money subtractInMinor(long addedMinorUnits) {
-        return new Money(currency, amountInMinorUnit - addedMinorUnits);
-    }
+		long newAmmount = amountInMinorUnit + addedMinorUnits;
+		if (newAmmount < amountInMinorUnit) {
+			throw new ArithmeticException("Overflow!");
+		}
+		return new Money(currency, newAmmount);
 
-    public Money subtractInMajor(long addedMajorUnits) {
-        return new Money(currency, amountInMinorUnit - addedMajorUnits * MAJOR_UNIT);
-    }
+	}
 
-    public String toString() {
-        if(getRestAfterMajorUnit() == 0) {
-            return String.format("%d,%d0 %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());
-        }
-        return String.format("%d,%d %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());
-    }
+	public Money addInMajor(long addedMajorUnits) {
+
+		long newAmmount = amountInMinorUnit + addedMajorUnits * MAJOR_UNIT;
+
+		if (newAmmount < amountInMinorUnit) {
+			throw new ArithmeticException("Overflow!");
+		}
+
+		return new Money(currency, newAmmount);
+	}
+
+	public Money subtractInMinor(long addedMinorUnits) {
+
+		long newAmmount = amountInMinorUnit - addedMinorUnits;
+
+		if (newAmmount > amountInMinorUnit) {
+			throw new ArithmeticException("Underflow!");
+		}
+		return new Money(currency, newAmmount);
+	}
+
+	public Money subtractInMajor(long addedMajorUnits) {
+
+		long newAmmount = amountInMinorUnit - addedMajorUnits * MAJOR_UNIT;
+
+		if (newAmmount > amountInMinorUnit) {
+			throw new ArithmeticException("Underflow!");
+		}
+		return new Money(currency, newAmmount);
+	}
+
+	@Override
+	public String toString() {
+		if (getRestAfterMajorUnit() == 0) {
+			return String.format("%d,%d0 %s", getAmountInMajorUnit(), getRestAfterMajorUnit(),
+					getCurrency().getSymbol());
+		}
+		return String.format("%d,%d %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());
+	}
 
 
 }

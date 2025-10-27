@@ -23,7 +23,7 @@ public class Currency implements Comparable<Currency> {
 
 	@Override
 	public int compareTo(Currency other) {
-		return this.name.compareTo(other.name);
+		return this.name.compareTo(other.name) ;
 	}
 
 	public Object getSymbol() {
