@@ -423,14 +423,12 @@ public class TransactionTest {
 
     @Test
     public void bonuscheckDeductorAdjustsBonusPointsCorrectlyWhenAmountExceedsTotal() {
-        // Skapa items med låg total
         Currency SEK = createSEK();
         Money cheapItemPrice = new Money(SEK, 500); // 5 kr
         ItemType miscType = new ItemType("Misc", 0, new Money(SEK, 0), 0);
         Item cheapItem = new Item("CheapItem", miscType, cheapItemPrice);
         List<Item> items = List.of(cheapItem);
 
-        // Deductor med högre belopp än totalen
         Deductor bigBonuscheck = new Deductor(100, "Bonuscheck"); // 100 kr
         List<Deductor> deductors = List.of(bigBonuscheck);
 
@@ -439,13 +437,10 @@ public class TransactionTest {
 
         Transaction t = new Transaction(items, deductors, customer);
 
-        // Apply deductors
         t.applyDeductors();
 
-        // Totalen ska bli 0
         assertEquals(0, t.getTotalPrice());
 
-        // Bonuspoängen ska justeras korrekt (ej negativt mer än vad totalen var)
         assertEquals(0, customer.getBonusPoints(), "Bonuspoints should not go negative beyond total price");
     }
 
@@ -465,29 +460,23 @@ public class TransactionTest {
     public void bonuscheckDeductorSubtractsFullAmountWhenTotalExceedsDeductor() {
         Currency SEK = createSEK();
 
-        // Skapa ett item med total som är större än bonuscheck
         Money expensiveItemPrice = new Money(SEK, 2000); // 20 kr
         ItemType miscType = new ItemType("Misc", 0, new Money(SEK, 0), 0);
         Item expensiveItem = new Item("ExpensiveItem", miscType, expensiveItemPrice);
         List<Item> items = List.of(expensiveItem);
 
-        // Deductor mindre än totalen
         Deductor bonuscheck = new Deductor(10, "Bonuscheck"); // 10 kr
         List<Deductor> deductors = List.of(bonuscheck);
 
-        // Skapa kund med medlemskap
         Customer customer = createCustomerJohnSmith();
         customer.setMembership(new Membership());
 
         Transaction t = new Transaction(items, deductors, customer);
 
-        // Apply deductors
         t.applyDeductors();
 
-        // Totalen ska bli 10 kr kvar
         assertEquals(10.0, t.getTotalPrice(), 0.001);
 
-        // Bonuspoängen ska justeras korrekt
         assertEquals(0, customer.getBonusPoints(), "Bonuspoints should subtract full deductor amount");
     }
 }
