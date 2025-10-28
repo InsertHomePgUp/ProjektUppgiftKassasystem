@@ -14,31 +14,36 @@ public class Customer {
     private long bonusPoints;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
-        this.name = Objects.requireNonNull(name);
+        Objects.requireNonNull(name);
         if (name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
+        this.name = name;
 
-        this.personalIdentityNumber = Objects.requireNonNull(personalIdentityNumber).trim();
-        if (personalIdentityNumber.isEmpty()) {
+        Objects.requireNonNull(personalIdentityNumber);
+        if (personalIdentityNumber.trim().isEmpty()) {
             throw new IllegalArgumentException("Personal identity number cannot be empty");
         }
         if (!pIDChecker(personalIdentityNumber)) {
             throw new IllegalArgumentException("Invalid personal identity number");
         }
+        this.personalIdentityNumber = personalIdentityNumber;
 
-        this.phoneNumber = Objects.requireNonNull(phoneNumber).trim();
-        if (phoneNumber.isEmpty()) {
+        Objects.requireNonNull(phoneNumber);
+        if (phoneNumber.trim().isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be empty");
         }
         if (!phoneNumberChecker(phoneNumber)) {
             throw new IllegalArgumentException("Phone number is not valid");
         }
+        this.phoneNumber = phoneNumber;
 
-        this.email = Objects.requireNonNull(email);
+        Objects.requireNonNull(email);
         if (email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
+        this.email =  email;
+
         this.itemList = new HashMap<Item, Integer>();
         this.membership = new NoMembership();
     }

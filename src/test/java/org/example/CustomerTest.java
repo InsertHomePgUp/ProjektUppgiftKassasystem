@@ -10,20 +10,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerTest {
 
     private Customer customer;
-    private Money money;
-    private ItemType bread;
-    private Item item;
     private Item banana;
     private Item banana1;
-    private ItemType fruit;
+    String name = "Jane Doe";
+    String pID = "040701-8621";
+    String phone = "0700143541";
+    String mail = "Jane@Doe.com";
 
     @BeforeEach
     public void setUp() {
-        customer = new Customer("Jane Doe", "8907028631", "0700143541", "Jane@Doe.com");
-        money = new Money(SEK.instance, 1000);
-        bread = new ItemType("Bread", 1.0, money, 0);
-        fruit = new ItemType("Fruit", 0.5, money, 0);
-        item = new Item("Levain", bread, money);
+        customer = new Customer(name, pID, phone, mail);
+        Money money = new Money(SEK.instance, 1000);
+        ItemType bread = new ItemType("Bread", 1.0, money, 0);
+        ItemType fruit = new ItemType("Fruit", 0.5, money, 0);
         banana1 = new Item("Banana", fruit, money);
         banana = new Item("Banana", bread, money);
     }
@@ -34,7 +33,7 @@ public class CustomerTest {
         @Test
         void ConstructorTest() {
             assertEquals("Jane Doe", customer.getName());
-            assertEquals("8907028631", customer.getPersonalIdentityNumber());
+            assertEquals("040701-8621", customer.getPersonalIdentityNumber());
             assertEquals("0700143541", customer.getPhoneNumber());
             assertEquals("Jane@Doe.com", customer.getEmail());
         }
@@ -179,9 +178,78 @@ public class CustomerTest {
         }
     }
 
+    @Nested
+    @DisplayName("Phone number Tests")
+    class PhoneNumberTests {
+
+        @Test
+        void getValidPhoneNumberTest() {
+            phone = "+4612345678";
+            Customer customer1 = new Customer(name, pID, phone, mail);
+            phone = "+461234567800000";
+            Customer customer2 = new Customer(name, pID, phone, mail);
+            assertEquals("+4612345678", customer1.getPhoneNumber());
+            assertEquals("+461234567800000", customer2.getPhoneNumber());
+        }
+
+        @Test
+        void gettestCase2() {
+            phone = "+461234567800000";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase3() {
+            phone = "+0612345678";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase4() {
+            phone = "+46123456";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase5() {
+            phone = "+46123456780000010";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase6() {
+            phone = "+46123456780000a";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase7() {
+            phone = "++4612345678";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase8() {
+            phone = "46123456780";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase9() {
+            phone = "+461234567";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+
+        @Test
+        void gettestCase10() {
+            phone = "+4612345678000008";
+            Customer newCustomer = new Customer(name, pID, phone, mail);
+        }
+    }
+
     @Test
     void toStringTest() {
-        assertEquals("Name: Jane Doe, PID: 8907028631, Phone Number: 0700143541, Email: Jane@Doe.com", customer.toString());
+        assertEquals("Name: Jane Doe, PID: 040701-8621, Phone Number: 0700143541, Email: Jane@Doe.com", customer.toString());
     }
 
 
