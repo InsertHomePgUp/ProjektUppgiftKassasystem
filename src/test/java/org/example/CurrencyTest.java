@@ -63,7 +63,7 @@ class CurrencyTest {
         SEK instance1 = SEK.instance;
         SEK instance2 = SEK.instance;
         
-        assertSame(instance1, instance2, "SEK should have a single instance");
+        assertSame(instance1, instance2, "Currency  should have a single instance");
     }
 
 }
