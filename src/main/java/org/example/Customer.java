@@ -14,66 +14,65 @@ public class Customer {
     private long bonusPoints;
 
     public Customer(String name, String personalIdentityNumber, String phoneNumber, String email) {
-        this.name = Objects.requireNonNull(name);
+        Objects.requireNonNull(name);
         if (name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
+        this.name = name;
 
-        this.personalIdentityNumber = Objects.requireNonNull(personalIdentityNumber).trim();
-        if (personalIdentityNumber.isEmpty()) {
+        Objects.requireNonNull(personalIdentityNumber);
+        if (personalIdentityNumber.trim().isEmpty()) {
             throw new IllegalArgumentException("Personal identity number cannot be empty");
         }
         if (!pIDChecker(personalIdentityNumber)) {
             throw new IllegalArgumentException("Invalid personal identity number");
         }
+        this.personalIdentityNumber = personalIdentityNumber;
 
-        this.phoneNumber = Objects.requireNonNull(phoneNumber).trim();
-        if (phoneNumber.isEmpty()) {
+        Objects.requireNonNull(phoneNumber);
+        if (phoneNumber.trim().isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be empty");
         }
         if (!phoneNumberChecker(phoneNumber)) {
             throw new IllegalArgumentException("Phone number is not valid");
         }
+        this.phoneNumber = phoneNumber;
 
-        this.email = Objects.requireNonNull(email);
+        Objects.requireNonNull(email);
         if (email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
+        this.email =  email;
+
         this.itemList = new HashMap<Item, Integer>();
         this.membership = new NoMembership();
     }
 
     private boolean phoneNumberChecker(String phoneNumber) {
         char[] charArray = phoneNumber.toCharArray();
-        if (charArray.length <= 16 && charArray.length >= 9) {
-            if (charArray[0] == '+' && charArray[1] != '0') {
-                for (int i = 1; i < charArray.length; i++) {
-                    if (!Character.isDigit(charArray[i])) {
-                        return false;
-                    }
+        if (charArray.length <= 16 && charArray.length >= 9 && charArray[0] == '+' && charArray[1] != '0') {
+            for (int i = 1; i < charArray.length; i++) {
+                if (!Character.isDigit(charArray[i])) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
-        if (charArray.length <= 15 && charArray.length >= 8) {
-            if (Character.isDigit(charArray[0]) && charArray[0] != '0') {
-                for (char c : charArray) {
-                    if (!Character.isDigit(c)) {
-                        return false;
-                    }
+        if (charArray.length <= 15 && charArray.length >= 8 && Character.isDigit(charArray[0]) && charArray[0] != '0') {
+            for (char c : charArray) {
+                if (!Character.isDigit(c)) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
-        if (charArray.length <= 14 && charArray.length >= 7) {
-            if (charArray[0] == '0' && charArray[1] != '0') {
-                for (char c : charArray) {
-                    if(!Character.isDigit(c)) {
-                        return false;
-                    }
+        if (charArray.length <= 14 && charArray.length >= 7 && charArray[0] == '0' && charArray[1] != '0') {
+            for (char c : charArray) {
+                if(!Character.isDigit(c)) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }
@@ -82,7 +81,8 @@ public class Customer {
         int total = 0;
         char[] charArray = pID.toCharArray();
         if (charArray.length == 11 && (charArray[6] == '+' || charArray[6] == '-')) {
-            pID = pID.replaceAll("[-+]", "");
+            pID = pID.replace("-", "");
+            pID = pID.replace("+", "");
             charArray = pID.toCharArray();
             if(!pID.chars().allMatch(Character::isDigit)) return false;
             if(charArray.length == 10) {
@@ -155,7 +155,7 @@ public class Customer {
     }
 
     public double bonusPointsToMoney() {
-        return (double) getBonusPoints() /100; //ger i kr
+        return (this.bonusPoints /100.0); //ger i kr
     }
 
     @Override
