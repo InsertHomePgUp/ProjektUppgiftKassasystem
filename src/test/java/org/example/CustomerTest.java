@@ -89,6 +89,26 @@ public class CustomerTest {
             assertThrows(NullPointerException.class,
                     () -> new Customer(name, pID, phone, null));
         }
+
+        @Test
+        void getInvalidPIDParameterTest() {
+            pID = "040701-8622";
+            assertThrows(IllegalArgumentException.class,
+                    () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidPIDParameterTest2() {
+            pID = "040701-862";
+            assertThrows(IllegalArgumentException.class,
+                    () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidPIDParameterTest3() {
+            pID = "0407018622";
+            assertThrows(IllegalArgumentException.class,
+                    () -> new Customer(name, pID, phone, mail));
+        }
+
     }
 
     @Nested
@@ -280,7 +300,8 @@ public class CustomerTest {
         }
         @Test
         void getFalseWhenANonDigitShowsUpTest() {
-
+            phone = "4610234a64";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
         }
     }
 
