@@ -87,7 +87,7 @@ public class Customer {
         int total = 0;
         char[] charArray = pID.toCharArray();
         if (charArray.length == 11 && (charArray[6] == '+' || charArray[6] == '-')) {
-            pID = pID.replaceAll("[-+]", "");
+            pID = pID.replace("-", "");
             charArray = pID.toCharArray();
             if(!pID.chars().allMatch(Character::isDigit)) return false;
             if(charArray.length == 10) {

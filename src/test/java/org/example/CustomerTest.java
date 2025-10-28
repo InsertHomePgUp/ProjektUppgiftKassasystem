@@ -12,19 +12,28 @@ public class CustomerTest {
     private Customer customer;
     private Item banana;
     private Item banana1;
-    String name = "Jane Doe";
-    String pID = "040701-8621";
-    String phone = "0700143541";
-    String mail = "Jane@Doe.com";
+    String name;
+    String pID;
+    String phone;
+    String mail;
 
     @BeforeEach
     public void setUp() {
+        name = "Jane Doe";
+        pID = "040701-8621";
+        phone = "0700143541";
+        mail = "Jane@Doe.com";
         customer = new Customer(name, pID, phone, mail);
         Money money = new Money(SEK.instance, 1000);
         ItemType bread = new ItemType("Bread", 1.0, money, 0);
         ItemType fruit = new ItemType("Fruit", 0.5, money, 0);
         banana1 = new Item("Banana", fruit, money);
         banana = new Item("Banana", bread, money);
+    }
+
+    @Test
+    void customerShouldNotBeNullAfterSetup() {
+        assertNotNull(customer, "Customer failed to construct in @BeforeEach");
     }
 
     @Nested
@@ -41,44 +50,44 @@ public class CustomerTest {
         @Test
         void EmptyNameParameterTest() {
             assertThrows(IllegalArgumentException.class,
-                    () -> new Customer(" ", "8907028631", "0700143541", "Jane@Doe.com"));
+                    () -> new Customer(" ", pID, phone, mail));
         }
         @Test
         void EmptyPIDParameterTest() {
             assertThrows(IllegalArgumentException.class,
-                    () -> new Customer("Jane Doe", " ", "0700143541", "Jane@Doe.com"));
+                    () -> new Customer(name, " ", phone, mail));
         }
         @Test
         void EmptyPhoneNumberParameterTest() {
             assertThrows(IllegalArgumentException.class,
-                    () -> new Customer("Jane Doe", "8907028631", " ", "Jane@Doe.com"));
+                    () -> new Customer(name, pID, " ", mail));
         }
         @Test
         void EmptyEmailParameterTest() {
             assertThrows(IllegalArgumentException.class,
-                    () -> new Customer("Jane Doe", "8907028631", "0700143541", " "));
+                    () -> new Customer(name, pID, phone, " "));
         }
 
         //null i parametrar
         @Test
         void NullNameParameterTest() {} {
             assertThrows(NullPointerException.class,
-                    () -> new Customer(null, "8907028631", "0700143541", "Jane@Doe.com"));
+                    () -> new Customer(null, pID, phone, mail));
         }
         @Test
         void NullPIDParameterTest() {} {
             assertThrows(NullPointerException.class,
-                    () -> new Customer("Jane Doe", null, "0700143541", "Jane@Doe.com"));
+                    () -> new Customer(name, null, phone, mail));
         }
         @Test
         void NullPhoneNumberParameterTest() {} {
             assertThrows(NullPointerException.class,
-                    () -> new Customer("Jane Doe", "8907028631", null, "Jane@Doe.com"));
+                    () -> new Customer(name, pID, null, mail));
         }
         @Test
         void NullEmailParameterTest() {} {
             assertThrows(NullPointerException.class,
-                    () -> new Customer("Jane Doe", "8907028631", "0700143541", null));
+                    () -> new Customer(name, pID, phone, null));
         }
     }
 
@@ -179,72 +188,59 @@ public class CustomerTest {
     }
 
     @Nested
-    @DisplayName("Phone number Tests")
+    @DisplayName("National Phone number Tests")
     class PhoneNumberTests {
 
         @Test
         void getValidPhoneNumberTest() {
-            phone = "+4612345678";
+            phone = "+46123456";
             Customer customer1 = new Customer(name, pID, phone, mail);
             phone = "+461234567800000";
             Customer customer2 = new Customer(name, pID, phone, mail);
-            assertEquals("+4612345678", customer1.getPhoneNumber());
+            assertEquals("+46123456", customer1.getPhoneNumber());
             assertEquals("+461234567800000", customer2.getPhoneNumber());
         }
 
         @Test
-        void gettestCase2() {
-            phone = "+461234567800000";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
-
-        @Test
-        void gettestCase3() {
+        void getWrongStartOfPhoneNumberTest() {
             phone = "+0612345678";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
         }
 
         @Test
-        void gettestCase4() {
-            phone = "+46123456";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
+        void getTooShortPhoneNumberTest() {
+            phone = "+46123";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
 
         @Test
-        void gettestCase5() {
+        void getTooLongPhoneNumberTest() {
             phone = "+46123456780000010";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
 
         @Test
-        void gettestCase6() {
+        void getNotOnlyDigitsPhoneNumberTest() {
             phone = "+46123456780000a";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
 
         @Test
-        void gettestCase7() {
+        void getTooManyPlusSignsPhoneNumberTest() {
             phone = "++4612345678";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
 
         @Test
-        void gettestCase8() {
+        void getNoPlusSignsPhoneNumberTest() {
             phone = "46123456780";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
 
         @Test
         void gettestCase9() {
-            phone = "+461234567";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
+            phone = "+4612340";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
 
         @Test
         void gettestCase10() {
             phone = "+4612345678000008";
-            Customer newCustomer = new Customer(name, pID, phone, mail);
-        }
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
     }
 
     @Test
