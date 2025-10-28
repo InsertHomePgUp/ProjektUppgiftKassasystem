@@ -8,6 +8,9 @@ import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//det här är testfall som chatGPT skrev
+//jag använde dom för att jämföra med mina egna i customerTest
+//samt som komplement
 public class CustomerAITest {
 
     private Method phoneNumberChecker;
