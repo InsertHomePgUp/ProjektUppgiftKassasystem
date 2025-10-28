@@ -57,5 +57,13 @@ class CurrencyTest {
 		assertEquals(usd.name, anotherUsd.name);
 		assertEquals(usd.symbol, anotherUsd.symbol);
 	}
+	
+	@Test
+    public void testSingletonInstance() {
+        SEK instance1 = SEK.instance;
+        SEK instance2 = SEK.instance;
+        
+        assertSame(instance1, instance2, "SEK should have a single instance");
+    }
 
 }
