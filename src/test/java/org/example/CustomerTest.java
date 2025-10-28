@@ -91,7 +91,7 @@ public class CustomerTest {
         }
 
         @Test
-        void getInvalidPIDParameterTest() {
+        void getInvalidPIDParameterTest1() {
             pID = "040701-8622";
             assertThrows(IllegalArgumentException.class,
                     () -> new Customer(name, pID, phone, mail));
@@ -103,12 +103,29 @@ public class CustomerTest {
                     () -> new Customer(name, pID, phone, mail));
         }
         @Test
-        void getInvalidPIDParameterTest3() {
-            pID = "0407018622";
+        void getValidPIDParameterTest3() {
+            pID = "040701+8621";
+            Customer customer = new Customer(name, pID, phone, mail);
+            assertEquals(pID, customer.getPersonalIdentityNumber());
+        }
+        @Test
+        void getInvalidPIDParameterTest4() {
+            pID = "040a01-8621";
             assertThrows(IllegalArgumentException.class,
                     () -> new Customer(name, pID, phone, mail));
         }
-
+        @Test
+        void getInvalidPIDParameterTest5() {
+            pID = "04070-18621";
+            assertThrows(IllegalArgumentException.class,
+                    () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidPIDParameterTest6() {
+            pID = "040701--862";
+            assertThrows(IllegalArgumentException.class,
+                    () -> new Customer(name, pID, phone, mail));
+        }
     }
 
     @Nested
