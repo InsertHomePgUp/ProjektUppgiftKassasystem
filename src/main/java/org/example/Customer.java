@@ -50,35 +50,29 @@ public class Customer {
 
     private boolean phoneNumberChecker(String phoneNumber) {
         char[] charArray = phoneNumber.toCharArray();
-        if (charArray.length <= 16 && charArray.length >= 9) {
-            if (charArray[0] == '+' && charArray[1] != '0') {
-                for (int i = 1; i < charArray.length; i++) {
-                    if (!Character.isDigit(charArray[i])) {
-                        return false;
-                    }
+        if (charArray.length <= 16 && charArray.length >= 9 && charArray[0] == '+' && charArray[1] != '0') {
+            for (int i = 1; i < charArray.length; i++) {
+                if (!Character.isDigit(charArray[i])) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
-        if (charArray.length <= 15 && charArray.length >= 8) {
-            if (Character.isDigit(charArray[0]) && charArray[0] != '0') {
-                for (char c : charArray) {
-                    if (!Character.isDigit(c)) {
-                        return false;
-                    }
+        if (charArray.length <= 15 && charArray.length >= 8 && Character.isDigit(charArray[0]) && charArray[0] != '0') {
+            for (char c : charArray) {
+                if (!Character.isDigit(c)) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
-        if (charArray.length <= 14 && charArray.length >= 7) {
-            if (charArray[0] == '0' && charArray[1] != '0') {
-                for (char c : charArray) {
-                    if(!Character.isDigit(c)) {
-                        return false;
-                    }
+        if (charArray.length <= 14 && charArray.length >= 7 && charArray[0] == '0' && charArray[1] != '0') {
+            for (char c : charArray) {
+                if(!Character.isDigit(c)) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }
@@ -160,7 +154,7 @@ public class Customer {
     }
 
     public double bonusPointsToMoney() {
-        return (double) getBonusPoints() /100; //ger i kr
+        return (this.bonusPoints /100.0); //ger i kr
     }
 
     @Override

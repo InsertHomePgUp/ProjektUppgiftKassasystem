@@ -185,6 +185,14 @@ public class CustomerTest {
             customer.addOrSubtractBonusPoints(4);
             assertEquals(24, customer.getBonusPoints());
         }
+        @Test
+        void convertingBonusPointsToMoneyTest() {
+            customer.setMembership(new Membership());
+            customer.addOrSubtractBonusPoints(1000);
+            double money = customer.bonusPointsToMoney();
+            assertEquals(10.0, money);
+            assertEquals(1000, customer.getBonusPoints());
+        }
     }
 
     @Nested
@@ -269,6 +277,10 @@ public class CustomerTest {
         void getInvalidLengthLongPhoneNumberTest() {
             phone = "4603040500908070";
             assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getFalseWhenANonDigitShowsUpTest() {
+
         }
     }
 
