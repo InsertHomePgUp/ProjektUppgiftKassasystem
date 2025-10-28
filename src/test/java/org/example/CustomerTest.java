@@ -188,7 +188,7 @@ public class CustomerTest {
     }
 
     @Nested
-    @DisplayName("National Phone number Tests")
+    @DisplayName("International Phone number Tests")
     class PhoneNumberTests {
 
         @Test
@@ -228,11 +228,6 @@ public class CustomerTest {
             assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
 
         @Test
-        void getNoPlusSignsPhoneNumberTest() {
-            phone = "46123456780";
-            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
-
-        @Test
         void gettestCase9() {
             phone = "+4612340";
             assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
@@ -241,6 +236,84 @@ public class CustomerTest {
         void gettestCase10() {
             phone = "+4612345678000008";
             assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));        }
+    }
+
+    @Nested
+    @DisplayName("International Phone number Tests without +")
+    class PhoneNumberTestsTwo{
+        @Test
+        void getValidPhoneNumberTest() {
+            phone = "46030405";
+            Customer customer1 = new Customer(name, pID, phone, mail);
+            phone = "460304050090807";
+            Customer customer2 = new Customer(name, pID, phone, mail);
+            assertEquals("46030405", customer1.getPhoneNumber());
+            assertEquals("460304050090807", customer2.getPhoneNumber());
+        }
+        @Test
+        void getTooShortPhoneNumberTest() {
+            phone = "460304";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getTooLongPhoneNumberTest() {
+            phone = "46030405009080709";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidLengthShortPhoneNumberTest() {
+            phone = "4603040";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidLengthLongPhoneNumberTest() {
+            phone = "4603040500908070";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+    }
+
+    @Nested
+    @DisplayName("International Phone number Tests without +")
+    class PhoneNumberTestsThree {
+        @Test
+        void getValidPhoneNumberTest() {
+            phone = "0760984";
+            Customer customer1 = new Customer(name, pID, phone, mail);
+            phone = "07609848938743";
+            Customer customer2 = new Customer(name, pID, phone, mail);
+            assertEquals("0760984", customer1.getPhoneNumber());
+            assertEquals("07609848938743", customer2.getPhoneNumber());
+        }
+        @Test
+        void getTooShortPhoneNumberTest() {
+            phone = "07609";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getTooLongPhoneNumberTest() {
+            phone = "0760984893874300";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidStartPhoneNumberTest() {
+            phone = "00760984";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getNotOnlyDigitsPhoneNumberTest() {
+            phone = "0760984a";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidBoarderShortPhoneNumberTest() {
+            phone = "076098";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
+        @Test
+        void getInvalidBoarderLongPhoneNumberTest() {
+            phone = "076098489387433";
+            assertThrows(IllegalArgumentException.class, () -> new Customer(name, pID, phone, mail));
+        }
     }
 
     @Test
