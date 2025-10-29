@@ -8,9 +8,10 @@ public class Bank {
 	private Map<Currency, Double> conversionRates;
 
 	private Map<String, Currency> currencySet;
-
-	private final Currency baseCurrancy = new Currency("Svenska kronor", "kr", 100000, 50000, 10000, 5000, 2000, 1000,
-			500, 100, 1);
+	
+	private final double sekToSekConversionRate = 1;
+	private final double usdToSekConversionRate = 10;
+	private final double euroToSekConversionRate = 11;
 
 	public Bank() {
 		this.currencySet = new HashMap<String, Currency>();
@@ -19,24 +20,20 @@ public class Bank {
 
 	}
 
-	// read in currencies that that the bank will have available for exchange
 	private void setAvailableCurrencies() {
 
-		Currency SEK = baseCurrancy;
-		this.addNewCurrency("SEK", SEK, 1);
+		this.addNewCurrency(SEK.instance.toString(), SEK.instance, sekToSekConversionRate);
 
-		Currency USD = new Currency("US dollar", "$", 10000, 5000, 2000, 1000, 500, 100, 50, 25, 10, 5, 1);
-		this.addNewCurrency("USD", USD, 10);
+		this.addNewCurrency(USD.instance.toString(), USD.instance, usdToSekConversionRate);
 
-		Currency EURO = new Currency("Euro", "€",50000,20000, 10000, 5000, 2000, 1000, 500);
-		this.addNewCurrency("EURO", EURO, 11);
+		this.addNewCurrency(EURO.instance.toString(), EURO.instance, euroToSekConversionRate);
 
 	}
 
-	private void addNewCurrency(String name, Currency currency, double rateRelativeToSEK) {
+	private void addNewCurrency(String name, Currency currency, double rateRelativeToBase) {
 
 		currencySet.put(name, currency);
-		setConversionRate(currency, rateRelativeToSEK);
+		setConversionRate(currency, rateRelativeToBase);
 	}
 
 	private void setConversionRate(Currency from, double rate) {
@@ -46,12 +43,12 @@ public class Bank {
 
 	public double getConversionRate(Currency from, Currency to) {
 
-		if (from.compareTo(baseCurrancy) == 0) {
+		if (from.compareTo(SEK.instance) == 0) {
 			return 1 / conversionRates.get(to);
-		} else if (to.compareTo(baseCurrancy) == 0) {
+		} else if (to.compareTo(SEK.instance) == 0) {
 			return conversionRates.get(from);
 		} else {
-			return getConversionRate(from, baseCurrancy) * getConversionRate(baseCurrancy, to);
+			return getConversionRate(from, SEK.instance) * getConversionRate(SEK.instance, to);
 		}
 
 	}
@@ -63,8 +60,6 @@ public class Bank {
 		if (!conversionRates.containsKey(previousCurrency)) {
 			throw new IllegalArgumentException("No conversion rate found for " + previousCurrency);
 		}
-
-
 
 		double rate = this.getConversionRate(previousCurrency, newCurrency);
 		Money moneyInNewCurrency = new Money(newCurrency, (long) (money.getAmountInMinorUnit() * rate));
