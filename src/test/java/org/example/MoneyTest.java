@@ -43,6 +43,11 @@ public class MoneyTest {
 	        assertEquals(2000L, doubled.getAmountInMinorUnit());
 	        assertEquals(usd, doubled.getCurrency());
 	    }
+	    
+	    @Test
+	    void testAmoountCantbeNull() {
+	    	assertThrows(NullPointerException.class, () -> new Money(null, 100));
+	    }
 
 	    @Test
 	    void testMultiplyRoundingDown() {
@@ -109,15 +114,39 @@ public class MoneyTest {
 	    }
 	    
 	    @Test
-	    void testSubtractInMajorUnderflow() {
-	    	Money original = new Money(usd, Long.MIN_VALUE);
+	    void testSubtractInMajorBellowZero() {
+	    	Money original = new Money(usd, 0);
 	        assertThrows(ArithmeticException.class, () -> original.subtractInMajor(100L));
 	    }
 	    
 	    @Test
-	    void testSubtractSubtractInMinorUnderflow() {
-	    	Money original = new Money(usd, Long.MIN_VALUE);
+	    void testSubtractInMinorBellowZero() {
+	    	Money original = new Money(usd, 0);
 	        assertThrows(ArithmeticException.class, () -> original.subtractInMinor(100L));
+	    }
+	    
+	    @Test
+	    void testSubtractWithNegativeNumberMajorUnit() {
+	    	Money original = new Money(usd, 100L);
+	        assertThrows(IllegalArgumentException.class, () -> original.subtractInMajor(-10L));
+	    }
+	    
+	    @Test
+	    void testSubtractWithNegativeNumberMinorUnit() {
+	    	Money original = new Money(usd, 100L);
+	        assertThrows(IllegalArgumentException.class, () -> original.subtractInMinor(-10L));
+	    }
+	    
+	    @Test
+	    void testAddtWithNegativeNumberMajorUnit() {
+	    	Money original = new Money(usd, 100L);
+	        assertThrows(IllegalArgumentException.class, () -> original.addInMajor(-10L));
+	    }
+	    
+	    @Test
+	    void testAddWithNegativeNumberMinorUnit() {
+	    	Money original = new Money(usd, 100L);
+	        assertThrows(IllegalArgumentException.class, () -> original.addInMinor(-10L));
 	    }
 	    
 	    
