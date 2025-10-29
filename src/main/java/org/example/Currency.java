@@ -7,6 +7,27 @@ public class Currency implements Comparable<Currency> {
 	public final int[] denominations;
 
 	public Currency(String name, String symbol, int... denominations) {
+		
+		if(name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		}
+		
+		if(name.isBlank()) {
+			throw new IllegalArgumentException("Name cannot be empty");
+		}
+		
+		if(symbol == null) {
+			throw new IllegalArgumentException("Symbol cannot be null");
+		}
+		
+		if(symbol.isBlank()) {
+			throw new IllegalArgumentException("Symbol cannot be empty");
+		}
+		
+		if(denominations == null) {
+			throw new IllegalArgumentException("denominations cannot be null");
+		}
+		
 		this.name = name;
 		this.symbol = symbol;
 		this.denominations = denominations;

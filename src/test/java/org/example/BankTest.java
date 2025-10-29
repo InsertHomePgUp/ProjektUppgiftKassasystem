@@ -118,5 +118,13 @@ public class BankTest {
 				"Expected exchange to throw, but it didn't");
 
 	}
+	
+	@Test
+	 void testGetAvailableCurrenciesIsUnmodifiable() {
+	        Map<String, Currency> result = bank.getAvaliableCurrencies();
+
+	        // Verify it's unmodifiable
+	        assertThrows(UnsupportedOperationException.class, () -> result.put("GBP", new Currency("GBP", "P", 1,2,3)));
+	    }
 
 }

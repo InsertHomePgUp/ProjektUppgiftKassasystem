@@ -16,6 +16,35 @@ class CurrencyTest {
 		eur = new Currency("Euro", "€", 5, 10, 20, 50, 100, 200);
 		anotherUsd = new Currency("US Dollar", "$", 1, 5, 10, 20, 50, 100);
 	}
+	
+	@Test
+	void testNameCanNotBeNull() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency(null, "$", 1, 5, 10, 20, 50, 100));
+		
+	}
+	
+	@Test
+	void testSymbolCanNotBeNull() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("USD", null, 1, 5, 10, 20, 50, 100));
+		
+	}
+	
+	@Test
+	void testNameCanNotBeEmpty() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("", "$", 1, 5, 10, 20, 50, 100));
+		
+	}
+	@Test
+	void testSymbolCanNotBeEmpty() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("test", "", 1, 5, 10, 20, 50, 100));
+		
+	}
+	
+	@Test
+	void testDenominationsCanNotBeNull() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("test", "test", null));
+		
+	}
 
 	@Test
 	void testConstructorAndFields() {

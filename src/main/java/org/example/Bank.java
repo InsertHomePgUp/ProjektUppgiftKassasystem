@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,8 +70,8 @@ public class Bank {
 	}
 
 	public Map<String, Currency> getAvaliableCurrencies() {
-
-		return this.currencySet;
+		
+		return Collections.unmodifiableMap(this.currencySet);
 	}
 
 }
