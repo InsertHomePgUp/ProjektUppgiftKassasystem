@@ -146,6 +146,7 @@ public class TransactionTest {
     }
 
     //tillståndsmaskin tester
+    //TM - a1, b5, d7, e8, g12, h
     @Test
     public void noDeductorPayWithCashCustomerIsMember(){
 
@@ -218,6 +219,7 @@ public class TransactionTest {
         );
     }
 
+    //TM - a2. b3, c4, b6 e9, f11, h
     @Test
     public void deductorTotalPriceLessThanZeroNonMember(){
         ArrayList <Item> tempShoppingCart = new ArrayList<>();
@@ -288,6 +290,7 @@ public class TransactionTest {
         );
     }
 
+    // TM - a2. b6, e9, f10, g12, h
     @Test
     public void deductorPayWithCardNonMemberWantsToBecomeMember(){
         ArrayList <Item> tempShoppingCart = new ArrayList<>();
@@ -361,6 +364,18 @@ public class TransactionTest {
         );
     }
 
+    //TM - a1, b5, d13, i
+    @Test
+    public void cantGiveChange(){
+        List<Item> items = createItems();
+        List<Deductor> deductors = new ArrayList<>();
+        Transaction t = new Transaction(items, deductors, createCustomerJohnSmith());
+        CashRegister cr = new CashRegister(new ArrayList<>(List.of(100, 50, 20)));
+        assertThrows(IllegalStateException.class, () -> t.payWithCash(cr, new ArrayList<>(List.of(1000))));
+    }
+
+
+    //tester för 100% täckning
     @Test
     public void invalidDeductorTypeThrowsException() {
         List<Item> items = createItems();
@@ -410,15 +425,6 @@ public class TransactionTest {
         Transaction t = new Transaction(items, deductors, createCustomerJohnSmith());
         double total = t.getTotalPrice();
         assertEquals(0, total);
-    }
-
-    @Test
-    public void cantGiveChange(){
-        List<Item> items = createItems();
-        List<Deductor> deductors = new ArrayList<>();
-        Transaction t = new Transaction(items, deductors, createCustomerJohnSmith());
-        CashRegister cr = new CashRegister(new ArrayList<>(List.of(100, 50, 20)));
-        assertThrows(IllegalStateException.class, () -> t.payWithCash(cr, new ArrayList<>(List.of(1000))));
     }
 
     @Test
