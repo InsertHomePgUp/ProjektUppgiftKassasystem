@@ -40,7 +40,7 @@ public class Money {
 	}
 
 	public Money multiply(double factor) {
-		long newAmount = (long) (amountInMinorUnit * factor);
+		long newAmount =  Math.round(amountInMinorUnit * factor);
 
 		return new Money(currency, newAmount);
 	}
