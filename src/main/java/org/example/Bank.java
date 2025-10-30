@@ -43,8 +43,13 @@ public class Bank {
 	}
 
 	public double getConversionRate(Currency from, Currency to) {
+		
+		if(conversionRates.get(to) == 0) {
+			throw new ArithmeticException("Cannot convert if rate is zero");
+		}
 
 		if (from.compareTo(SEK.instance) == 0) {
+			
 			return 1 / conversionRates.get(to);
 		} else if (to.compareTo(SEK.instance) == 0) {
 			return conversionRates.get(from);

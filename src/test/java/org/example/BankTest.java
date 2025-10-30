@@ -23,7 +23,7 @@ public class BankTest {
 		double actualRate = bank.getConversionRate(USD.instance, SEK.instance);
 		double expected = 10;
 
-		assertEquals(actualRate, expected);
+		assertEquals(expected, actualRate);
 
 	}
 
@@ -37,7 +37,7 @@ public class BankTest {
 
 		Money moneySEK = bank.exchange(moneyUSD, SEK.instance);
 
-		assertEquals(moneySEK.getAmountInMinorUnit(), expected);
+		assertEquals(expected, moneySEK.getAmountInMinorUnit());
 
 	}
 
@@ -51,7 +51,7 @@ public class BankTest {
 
 		Money newSwedishMoney = bank.exchange(swedishMoney, SEK.instance);
 
-		assertEquals(newSwedishMoney.getAmountInMinorUnit(), expected);
+		assertEquals(expected, newSwedishMoney.getAmountInMinorUnit());
 
 	}
 
@@ -65,7 +65,7 @@ public class BankTest {
 
 		Money newMoneyUSD = bank.exchange(moneyUSD, USD.instance);
 
-		assertEquals(newMoneyUSD.getAmountInMinorUnit(), expected);
+		assertEquals(expected, newMoneyUSD.getAmountInMinorUnit());
 
 	}
 
@@ -79,7 +79,7 @@ public class BankTest {
 
 		Money USDollar = bank.exchange(swedishMoney, USD.instance);
 
-		assertEquals(USDollar.getAmountInMinorUnit(), expected);
+		assertEquals(expected, USDollar.getAmountInMinorUnit());
 
 	}
 
@@ -93,7 +93,7 @@ public class BankTest {
 
 		Money moneyEuro = bank.exchange(moneyUSD, EURO.instance);
 
-		assertEquals(moneyEuro.getAmountInMinorUnit(), expected);
+		assertEquals(expected, moneyEuro.getAmountInMinorUnit());
 
 	}
 
