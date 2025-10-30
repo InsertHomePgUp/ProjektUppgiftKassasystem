@@ -2,7 +2,7 @@ package org.example;
 
 public class Item {
     private final String name;
-    private final Money price;
+    private Money price;
     private final ItemType itemType;
 
     public Item (String name, ItemType itemType, Money price) {
@@ -20,6 +20,11 @@ public class Item {
 
     public ItemType getItemType() {
         return itemType;
+    }
+
+    public void setDiscount(double percent) {
+        double fraction = 1 - (percent / 100); //To get fraction
+        price = new Money(SEK.instance, price.multiply(fraction).getAmountInMinorUnit());
     }
 
     public Money getPrice() {

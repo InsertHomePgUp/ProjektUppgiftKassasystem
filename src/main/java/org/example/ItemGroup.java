@@ -47,6 +47,20 @@ public class ItemGroup {
         return Collections.unmodifiableList(items);
     }
 
+    public void setGroupDiscount(double percent) {
+        for(Item i : items) {
+            i.setDiscount(percent);
+        }
+    }
+
+    public void setGroupDiscount(double percent, ItemType itemType) {
+        for(Item i : items) {
+            if(i.getItemType().equals(itemType)) {
+                i.setDiscount(percent);
+            }
+        }
+    }
+
     private void validateName(String name) {
         if(name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty");
