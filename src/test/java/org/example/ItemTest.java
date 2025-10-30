@@ -127,7 +127,7 @@ public class ItemTest {
         Item itemB = new Item("B", itemType, price);
         assertNotEquals(itemA, itemB);
 
-        //Different ItemTyoe
+        //Different ItemType
         Item itemC = new Item("A", new ItemType("Test", 15.0, new Money(SEK.instance, 0), 0), price);
         assertNotEquals(itemA, itemC);
 
