@@ -74,9 +74,9 @@ public class ItemTest {
 
     @Test
     void priceWithFractionalTaxCalculatedCorrectly() {
-        ItemType itemTypeZeroTax = new ItemType("Test", 12.5, deposit, 0);
-        Item item = new Item(testName, itemTypeZeroTax, price);
-        assertEquals(11250L, item.getPriceWithTax().getAmountInMinorUnit());
+        ItemType itemTypeFractionalTax = new ItemType("Test", 12.5, deposit, 0);
+        Item item = new Item(testName, itemTypeFractionalTax, price);
+        assertEquals(11250, item.getPriceWithTax().getAmountInMinorUnit());
     }
 
     @Test

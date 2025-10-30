@@ -31,7 +31,7 @@ public class ItemGroup {
     }
 
     public boolean contains(Item item) {
-        return items.contains(item); //Lika objekt?
+        return items.contains(item);
     }
 
     public void removeItem(Item item) {
