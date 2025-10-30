@@ -5,13 +5,16 @@ import java.util.*;
 public class Transaction {
 
     private double totalPrice;
-    private List<Item> items;
-    private List <Deductor> deductors;
+    private final List<Item> items;
+    private final List <Deductor> deductors;
     private boolean paid;
-    private Customer customer;
-    private long minorUnitConversion = 100;
+    private final Customer customer;
+    private final long minorUnitConversion = 100;
 
     public Transaction(List<Item> items, List<Deductor> deductors, Customer customer){
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer can not be null");
+        }
         this.items = items;
         this.deductors = deductors;
         this.paid = false;
