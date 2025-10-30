@@ -16,6 +16,35 @@ class CurrencyTest {
 		eur = new Currency("Euro", "€", 5, 10, 20, 50, 100, 200);
 		anotherUsd = new Currency("US Dollar", "$", 1, 5, 10, 20, 50, 100);
 	}
+	
+	@Test
+	void testNameCanNotBeNull() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency(null, "$", 1, 5, 10, 20, 50, 100));
+		
+	}
+	
+	@Test
+	void testSymbolCanNotBeNull() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("USD", null, 1, 5, 10, 20, 50, 100));
+		
+	}
+	
+	@Test
+	void testNameCanNotBeEmpty() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("", "$", 1, 5, 10, 20, 50, 100));
+		
+	}
+	@Test
+	void testSymbolCanNotBeEmpty() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("test", "", 1, 5, 10, 20, 50, 100));
+		
+	}
+	
+	@Test
+	void testDenominationsCanNotBeNull() {
+		assertThrows(IllegalArgumentException.class, () -> new Currency("test", "test", null));
+		
+	}
 
 	@Test
 	void testConstructorAndFields() {
@@ -64,6 +93,20 @@ class CurrencyTest {
         SEK instance2 = SEK.instance;
         
         assertSame(instance1, instance2, "Currency  should have a single instance");
+    }
+	
+	@Test
+    void testGetDenominationsReturnsUnmodifiableArray() {
+
+        int[] originalDenominations = usd.getDenominations(); 
+
+        originalDenominations[0] = 999;
+
+        int[] modifiedDenominations = usd.getDenominations(); 
+
+        assertNotEquals(999, modifiedDenominations[0], "Internal array should not be affected by modifications to the returned array");
+
+        assertEquals(modifiedDenominations.length, originalDenominations.length, "Array length should match");
     }
 
 }

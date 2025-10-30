@@ -90,4 +90,27 @@ public class ItemGroupTest {
         itemGroup.addItem(itemOne);
         assertThrows(IllegalArgumentException.class, () -> itemGroup.removeItem(itemTwo));
     }
+
+    @Test
+    void setGroupDiscountTest() {
+        ItemType costumes = new ItemType("Costumes", 10.0, new Money(SEK.instance, 0), 0);
+        Item batmanCostume = new Item("Batman costume", costumes, new Money(SEK.instance, 10000));
+
+        ItemType snacks = new ItemType("Snacks", 15.0, new Money(SEK.instance, 0), 0);
+        Item batmanSnacks = new Item("Batman snacks", snacks, new Money(SEK.instance, 1500));
+
+        ItemGroup halloweenClearance = new ItemGroup("Halloween clearance");
+
+        halloweenClearance.addItem(batmanCostume);
+        halloweenClearance.addItem(batmanSnacks);
+
+        halloweenClearance.setGroupDiscount(30); //30% discount
+
+        assertEquals(7000, batmanCostume.getPrice().getAmountInMinorUnit());
+        assertEquals(1050, batmanSnacks.getPrice().getAmountInMinorUnit());
+
+        halloweenClearance.setGroupDiscount(10, costumes); //Extra 10% on costumes
+
+        assertEquals(6300, batmanCostume.getPrice().getAmountInMinorUnit());
+    }
 }

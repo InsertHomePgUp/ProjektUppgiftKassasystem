@@ -40,8 +40,7 @@ public class ItemTypeTest {
 
     @Test
     void depositIsNotNegative() {
-        Money negativeDeposit = new Money(SEK.instance, -2);
-        assertThrows(IllegalArgumentException.class, () -> new ItemType(testItemTypeName, 15.0, negativeDeposit, 0));
+        assertThrows(IllegalArgumentException.class, () -> new ItemType(testItemTypeName, 15.0, new Money(SEK.instance, -2), 0));
     }
 
     @Test
