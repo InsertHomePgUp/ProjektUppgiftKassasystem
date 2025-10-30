@@ -25,10 +25,10 @@ public class ShoppingCartWithMockitoTest {
 
     @Test
     void addItem() {
-        //Skapar items i BeforeEach
+        //Items skapas i BeforeEach
 
         //Sätter beteende
-        when(mockScanner.scanBarcode("1")).thenReturn(beer);
+        when(mockScanner.scanBarcode("999")).thenReturn(beer);
 
         //Utför
         shoppingCart.scanAndAdd("1");

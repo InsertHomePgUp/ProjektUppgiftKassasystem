@@ -12,7 +12,7 @@ public class Membership implements MembershipInterface {
 
     @Override
     public HashMap<Item, Double> getDiscounts(){
-        return discountedItems;
+        return discountedItems; //unmod collection
     };
 
     @Override
