@@ -94,5 +94,19 @@ class CurrencyTest {
         
         assertSame(instance1, instance2, "Currency  should have a single instance");
     }
+	
+	@Test
+    void testGetDenominationsReturnsUnmodifiableArray() {
+
+        int[] originalDenominations = usd.getDenominations(); 
+
+        originalDenominations[0] = 999;
+
+        int[] modifiedDenominations = usd.getDenominations(); 
+
+        assertNotEquals(999, modifiedDenominations[0], "Internal array should not be affected by modifications to the returned array");
+
+        assertEquals(modifiedDenominations.length, originalDenominations.length, "Array length should match");
+    }
 
 }

@@ -42,7 +42,7 @@ public class BankTest {
 	}
 
 	@Test
-	public void testExchangeToSameCurrancy() {
+	public void testExchangeSekToSek() {
 		
 		long ammountIn = 1000;
 		long expected = 1000;
@@ -56,7 +56,7 @@ public class BankTest {
 	}
 
 	@Test
-	public void testExchangeToSameCurrancy2() {
+	public void testExchangeUsdToUsd() {
 		
 		long ammountIn = 1000;
 		long expected = 1000;
