@@ -55,8 +55,7 @@ public class ItemTest {
 
     @Test
     void cannotCreateItemWithNegativePrice() {
-        Money negativePrice = new Money(SEK.instance, -500);
-        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, negativePrice));
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, new Money(SEK.instance, -500)));
     }
 
     @Test

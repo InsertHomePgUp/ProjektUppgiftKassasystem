@@ -40,9 +40,9 @@ public class Money {
 	}
 
 	public Money multiply(double factor) {
-		long newAmmount = (long) (amountInMinorUnit * factor);
+		long newAmount = (long) (amountInMinorUnit * factor);
 
-		return new Money(currency, newAmmount);
+		return new Money(currency, newAmount);
 	}
 
 	public Money addInMinor(long addedMinorUnits) {

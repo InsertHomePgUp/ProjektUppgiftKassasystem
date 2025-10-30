@@ -28,7 +28,7 @@ public class ShoppingCartWithMockitoTest {
         //Items skapas i BeforeEach
 
         //Sätter beteende
-        when(mockScanner.scanBarcode("999")).thenReturn(beer);
+        when(mockScanner.scanBarcode("1")).thenReturn(beer);
 
         //Utför
         shoppingCart.scanAndAdd("1");
