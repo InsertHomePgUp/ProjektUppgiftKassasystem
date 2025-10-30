@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 public class Currency implements Comparable<Currency> {
 
 	public final String name;
@@ -34,7 +37,7 @@ public class Currency implements Comparable<Currency> {
 	}
 
 	public int [] getDenominations(){
-		return denominations;
+        return Arrays.copyOf(denominations, denominations.length);
 	}
 
 	@Override
