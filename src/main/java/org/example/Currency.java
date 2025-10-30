@@ -2,6 +2,8 @@ package org.example;
 
 import java.util.Arrays;
 
+import java.util.Objects;
+
 public class Currency implements Comparable<Currency> {
 
 	public final String name;
@@ -52,5 +54,22 @@ public class Currency implements Comparable<Currency> {
 	public Object getSymbol() {
 
 		return this.symbol;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if(this == other) {
+			return true;
+		}
+		if(other == null || other.getClass() != getClass()) {
+			return false;
+		}
+		Currency currency = (Currency) other;
+		return name.equals(currency.name) && symbol.equals(currency.symbol);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, symbol);
 	}
 }

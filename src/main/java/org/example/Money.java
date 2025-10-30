@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 public class Money {
 
 	private static final int MAJOR_UNIT = 100;
@@ -112,5 +114,20 @@ public class Money {
 		return String.format("%d,%d %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if(this == other) {
+			return true;
+		}
+		if(other == null || other.getClass() != getClass()) {
+			return false;
+		}
+		Money money = (Money) other;
+		return currency.equals(money.currency) && amountInMinorUnit == money.amountInMinorUnit;
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(currency, amountInMinorUnit);
+	}
 }

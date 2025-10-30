@@ -100,4 +100,56 @@ public class ItemTest {
         item.setDiscount(12.5);
         assertEquals(8750, item.getPrice().getAmountInMinorUnit());
     }
+
+    @Test
+    void equalsTestSameObject() {
+        Item item = new Item(testName, itemType, price);
+        assertEquals(item, item);
+    }
+
+    @Test
+    void equalsTestNull() {
+        Item item = new Item(testName, itemType, price);
+        assertFalse(item.equals(null));
+    }
+
+    @Test
+    void equalsTestDifferentClass() {
+        Item item = new Item(testName, itemType, price);
+        ItemType itemType = new ItemType("Test", 15.0, new Money(SEK.instance, 100), 0);
+        assertNotEquals(item, itemType);
+    }
+
+    @Test
+    void equalsTestDifferentValues() {
+        //Different name
+        Item itemA = new Item("A", itemType, price);
+        Item itemB = new Item("B", itemType, price);
+        assertNotEquals(itemA, itemB);
+
+        //Different ItemTyoe
+        Item itemC = new Item("A", new ItemType("Test", 15.0, new Money(SEK.instance, 0), 0), price);
+        assertNotEquals(itemA, itemC);
+
+        //Different price
+        Item itemD = new Item("A", itemType, new Money(SEK.instance, 12345));
+        assertNotEquals(itemA, itemD);
+    }
+
+    @Test
+    void equalsTestDifferentInstance() {
+        Item itemA = new Item("A", itemType, price);
+        Item itemB = new Item("A", itemType, price);
+
+        assertEquals(itemA, itemB);
+    }
+
+    @Test
+    void hashcodeIsConsistent() {
+        Item itemA = new Item(testName, itemType, price);
+        int hash1 = itemA.hashCode();
+        int hash2 = itemA.hashCode();
+
+        assertEquals(hash1, hash2);
+    }
 }

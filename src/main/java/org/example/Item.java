@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 public class Item {
     private final String name;
     private Money price;
@@ -37,6 +39,23 @@ public class Item {
 
     public Money getPriceWithTax() {
         return price.multiply((1 + itemType.getTaxRate()));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(this == other) {
+            return true;
+        }
+        if(other == null || other.getClass() != getClass()) {
+            return false;
+        }
+        Item item = (Item) other;
+        return name.equals(item.name) && itemType.equals(item.itemType) && price.equals(item.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, itemType, price);
     }
 
     @Override
