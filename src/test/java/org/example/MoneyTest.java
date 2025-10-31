@@ -48,6 +48,11 @@ public class MoneyTest {
 	    void testAmoountCantbeNull() {
 	    	assertThrows(NullPointerException.class, () -> new Money(null, 100));
 	    }
+	    
+	    @Test
+	    void testCurrencyWhereAmountIsLessThenZero() {
+	        assertThrows(IllegalArgumentException.class, () -> new Money(usd, -1L));
+	    }
 
 	    @Test
 	    void testMultiplyRoundingDown() {
@@ -149,10 +154,31 @@ public class MoneyTest {
 	        assertThrows(IllegalArgumentException.class, () -> original.addInMinor(-10L));
 	    }
 	    
-	    
+	    @Test
+	    void testEquals() {
+	    	Money original = new Money(usd, 100L);
+	    	Money other = new Money(usd, 100L);
+	    	Money otherCurrency = new Money(SEK.instance, 100L);
+	    	Money otherAmount = new Money(usd, 10L);
+	    	assertEquals(original.equals(original), true);
+	        assertEquals(original.equals(other), true);
+	        assertEquals(original.equals(otherCurrency), false);
+	        assertEquals(original.equals(otherAmount), false);
+	        assertEquals(original.equals(null), false);
 
+	    }
 	    
-	    
+	    @Test
+	    void testHashCode() {
+	    	Money original = new Money(usd, 100L);
+	    	Money other = new Money(usd, 100L);
+	    	Money otherCurrency = new Money(SEK.instance, 100L);
+	    	Money otherAmount = new Money(usd, 10L);
+	        assertEquals(original.hashCode(), other.hashCode());
+	        assertNotEquals(original.hashCode(), otherCurrency.hashCode());
+	        assertNotEquals(original.hashCode(), otherAmount.hashCode());
+	    }
+    
 	}
 
 

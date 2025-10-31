@@ -50,7 +50,7 @@ public class Money {
 	public Money addInMinor(long addedMinorUnits) {
 		
 		if(addedMinorUnits < 0) {
-			throw new IllegalArgumentException("cannot add with negative number");
+			throw new IllegalArgumentException("Can not add with negative amount");
 		}
 
 		long newAmmount = amountInMinorUnit + addedMinorUnits;
@@ -64,7 +64,7 @@ public class Money {
 	public Money addInMajor(long addedMajorUnits) {
 		
 		if(addedMajorUnits < 0) {
-			throw new IllegalArgumentException("cannot add with negative number");
+			throw new IllegalArgumentException("Can not add with negative amount");
 		}
 
 		long newAmmount = amountInMinorUnit + addedMajorUnits * MAJOR_UNIT;
@@ -79,13 +79,13 @@ public class Money {
 	public Money subtractInMinor(long addedMinorUnits) {
 		
 		if(addedMinorUnits < 0) {
-			throw new IllegalArgumentException("cannot subtract with negative number");
+			throw new IllegalArgumentException("Can not subtract with negative amount");
 		}
 
 		long newAmmount = amountInMinorUnit - addedMinorUnits;
 
 		if (newAmmount < 0) {
-			throw new ArithmeticException("Cannot subract more then current amount!");
+			throw new ArithmeticException("Can not subract more then current amount!");
 		}
 		return new Money(currency, newAmmount);
 	}
@@ -93,14 +93,14 @@ public class Money {
 	public Money subtractInMajor(long addedMajorUnits) {
 		
 		if(addedMajorUnits < 0) {
-			throw new IllegalArgumentException("cannot subtract with negative number");
+			throw new IllegalArgumentException("Can not subtract with negative amount");
 		}
 		
 
 		long newAmmount = amountInMinorUnit - addedMajorUnits * MAJOR_UNIT;
 
 		if (newAmmount < 0) {
-			throw new ArithmeticException("Cannot subract more then cureent amount!");
+			throw new ArithmeticException("Can not subract more then current amount!");
 		}
 		return new Money(currency, newAmmount);
 	}
