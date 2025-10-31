@@ -9,7 +9,7 @@ public class Bank {
 	private Map<Currency, Double> conversionRates;
 
 	private Map<String, Currency> currencySet;
-	
+
 	private final double sekToSekConversionRate = 1;
 	private final double usdToSekConversionRate = 10;
 	private final double euroToSekConversionRate = 11;
@@ -24,9 +24,7 @@ public class Bank {
 	private void setAvailableCurrencies() {
 
 		this.addNewCurrency(SEK.instance.toString(), SEK.instance, sekToSekConversionRate);
-
 		this.addNewCurrency(USD.instance.toString(), USD.instance, usdToSekConversionRate);
-
 		this.addNewCurrency(EURO.instance.toString(), EURO.instance, euroToSekConversionRate);
 
 	}
@@ -43,13 +41,13 @@ public class Bank {
 	}
 
 	public double getConversionRate(Currency from, Currency to) {
-		
-		if(conversionRates.get(to) == 0) {
-			throw new ArithmeticException("Cannot convert if rate is zero");
+
+		if (conversionRates.get(to) == 0) {
+			throw new ArithmeticException("Can not convert if rate is zero");
 		}
 
 		if (from.compareTo(SEK.instance) == 0) {
-			
+
 			return 1 / conversionRates.get(to);
 		} else if (to.compareTo(SEK.instance) == 0) {
 			return conversionRates.get(from);
@@ -75,7 +73,7 @@ public class Bank {
 	}
 
 	public Map<String, Currency> getAvaliableCurrencies() {
-		
+
 		return Collections.unmodifiableMap(this.currencySet);
 	}
 

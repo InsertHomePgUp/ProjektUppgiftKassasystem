@@ -29,7 +29,7 @@ public class BankTest {
 
 	@Test
 	public void testExchangeUSDtoSEKTest() {
-		
+
 		long ammountIn = 1000;
 		long expected = 10000;
 
@@ -43,7 +43,7 @@ public class BankTest {
 
 	@Test
 	public void testExchangeSekToSek() {
-		
+
 		long ammountIn = 1000;
 		long expected = 1000;
 
@@ -57,7 +57,7 @@ public class BankTest {
 
 	@Test
 	public void testExchangeUsdToUsd() {
-		
+
 		long ammountIn = 1000;
 		long expected = 1000;
 
@@ -71,7 +71,7 @@ public class BankTest {
 
 	@Test
 	public void exchangeSEKtoUSDTest() {
-		
+
 		long ammountIn = 1000;
 		long expected = 100;
 
@@ -85,9 +85,9 @@ public class BankTest {
 
 	@Test
 	public void testExchangeUSDtoEuro() {
-		
+
 		long ammountIn = 1000;
-		long expected = 10000 / 11;
+		long expected = 909;
 
 		Money moneyUSD = new Money(USD.instance, ammountIn);
 
@@ -99,7 +99,7 @@ public class BankTest {
 
 	@Test
 	public void testExchangeUnkownCurrancyToSek() {
-		
+
 		long ammountIn = 1000;
 
 		Money UnknowMoney = new Money(unknownCurrency, ammountIn);
@@ -110,7 +110,7 @@ public class BankTest {
 
 	@Test
 	public void testExchangeSEKtoUnknowCurrancy() {
-		
+
 		long ammountIn = 1000;
 
 		Money UnknowCurrancy = new Money(unknownCurrency, ammountIn);
@@ -118,13 +118,13 @@ public class BankTest {
 				"Expected exchange to throw, but it didn't");
 
 	}
-	
-	@Test
-	 void testGetAvailableCurrenciesIsUnmodifiable() {
-	        Map<String, Currency> result = bank.getAvaliableCurrencies();
 
-	        // Verify it's unmodifiable
-	        assertThrows(UnsupportedOperationException.class, () -> result.put("GBP", new Currency("GBP", "P", 1,2,3)));
-	    }
+	@Test
+	void testGetAvailableCurrenciesIsUnmodifiable() {
+		Map<String, Currency> result = bank.getAvaliableCurrencies();
+
+		// Verify it's unmodifiable
+		assertThrows(UnsupportedOperationException.class, () -> result.put("GBP", new Currency("GBP", "P", 1, 2, 3)));
+	}
 
 }

@@ -10,14 +10,14 @@ public class Money {
 	private final long amountInMinorUnit;
 
 	public Money(Currency currency, long amountInMinorUnit) {
-		
-		if(currency == null) {
+
+		if (currency == null) {
 			throw new NullPointerException("Currency can not be null");
 		}
-		if(amountInMinorUnit < 0L) {
+		if (amountInMinorUnit < 0L) {
 			throw new IllegalArgumentException("Ammount can not be less then 0");
 		}
-        this.currency = currency;
+		this.currency = currency;
 		this.amountInMinorUnit = amountInMinorUnit;
 	}
 
@@ -42,14 +42,18 @@ public class Money {
 	}
 
 	public Money multiply(double factor) {
-		long newAmount =  Math.round(amountInMinorUnit * factor);
+		
+		if (factor < 0) {
+			throw new IllegalArgumentException("Can not multiply with negative factor");
+		}
+		long newAmount = Math.round(amountInMinorUnit * factor);
 
 		return new Money(currency, newAmount);
 	}
 
 	public Money addInMinor(long addedMinorUnits) {
-		
-		if(addedMinorUnits < 0) {
+
+		if (addedMinorUnits < 0) {
 			throw new IllegalArgumentException("Can not add with negative amount");
 		}
 
@@ -62,8 +66,8 @@ public class Money {
 	}
 
 	public Money addInMajor(long addedMajorUnits) {
-		
-		if(addedMajorUnits < 0) {
+
+		if (addedMajorUnits < 0) {
 			throw new IllegalArgumentException("Can not add with negative amount");
 		}
 
@@ -77,8 +81,8 @@ public class Money {
 	}
 
 	public Money subtractInMinor(long addedMinorUnits) {
-		
-		if(addedMinorUnits < 0) {
+
+		if (addedMinorUnits < 0) {
 			throw new IllegalArgumentException("Can not subtract with negative amount");
 		}
 
@@ -91,11 +95,10 @@ public class Money {
 	}
 
 	public Money subtractInMajor(long addedMajorUnits) {
-		
-		if(addedMajorUnits < 0) {
+
+		if (addedMajorUnits < 0) {
 			throw new IllegalArgumentException("Can not subtract with negative amount");
 		}
-		
 
 		long newAmmount = amountInMinorUnit - addedMajorUnits * MAJOR_UNIT;
 
@@ -116,10 +119,10 @@ public class Money {
 
 	@Override
 	public boolean equals(Object other) {
-		if(this == other) {
+		if (this == other) {
 			return true;
 		}
-		if(other == null || other.getClass() != getClass()) {
+		if (other == null || other.getClass() != getClass()) {
 			return false;
 		}
 		Money money = (Money) other;
