@@ -42,7 +42,7 @@ public class Money {
 	}
 
 	public Money multiply(double factor) {
-		
+
 		if (factor < 0) {
 			throw new IllegalArgumentException("Can not multiply with negative factor");
 		}
