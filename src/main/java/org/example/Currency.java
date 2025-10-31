@@ -1,5 +1,9 @@
 package org.example;
 
+import java.util.Arrays;
+
+import java.util.Objects;
+
 public class Currency implements Comparable<Currency> {
 
 	public final String name;
@@ -7,13 +11,34 @@ public class Currency implements Comparable<Currency> {
 	public final int[] denominations;
 
 	public Currency(String name, String symbol, int... denominations) {
+		
+		if(name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		}
+		
+		if(name.isBlank()) {
+			throw new IllegalArgumentException("Name cannot be empty");
+		}
+		
+		if(symbol == null) {
+			throw new IllegalArgumentException("Symbol cannot be null");
+		}
+		
+		if(symbol.isBlank()) {
+			throw new IllegalArgumentException("Symbol cannot be empty");
+		}
+		
+		if(denominations == null) {
+			throw new IllegalArgumentException("denominations cannot be null");
+		}
+		
 		this.name = name;
 		this.symbol = symbol;
 		this.denominations = denominations;
 	}
 
 	public int [] getDenominations(){
-		return denominations;
+		return Arrays.copyOf(denominations, denominations.length);
 	}
 
 	@Override
@@ -29,5 +54,22 @@ public class Currency implements Comparable<Currency> {
 	public Object getSymbol() {
 
 		return this.symbol;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if(this == other) {
+			return true;
+		}
+		if(other == null || other.getClass() != getClass()) {
+			return false;
+		}
+		Currency currency = (Currency) other;
+		return name.equals(currency.name) && symbol.equals(currency.symbol);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, symbol);
 	}
 }

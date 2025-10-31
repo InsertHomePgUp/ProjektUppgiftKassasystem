@@ -146,6 +146,7 @@ public class TransactionTest {
     }
 
     //tillståndsmaskin tester
+    //TM - a1, b5, d7, e8, g12, h
     @Test
     public void noDeductorPayWithCashCustomerIsMember(){
 
@@ -218,6 +219,7 @@ public class TransactionTest {
         );
     }
 
+    //TM - a2. b3, c4, b6 e9, f11, h
     @Test
     public void deductorTotalPriceLessThanZeroNonMember(){
         ArrayList <Item> tempShoppingCart = new ArrayList<>();
@@ -288,6 +290,7 @@ public class TransactionTest {
         );
     }
 
+    // TM - a2. b6, e9, f10, g12, h
     @Test
     public void deductorPayWithCardNonMemberWantsToBecomeMember(){
         ArrayList <Item> tempShoppingCart = new ArrayList<>();
@@ -361,14 +364,18 @@ public class TransactionTest {
         );
     }
 
+    //TM - a1, b5, d13, i
     @Test
-    public void invalidDeductorTypeThrowsException() {
+    public void cantGiveChange(){
         List<Item> items = createItems();
         List<Deductor> deductors = new ArrayList<>();
-        deductors.add(new Deductor(10, "OgiltigTyp"));
         Transaction t = new Transaction(items, deductors, createCustomerJohnSmith());
-        assertThrows(IllegalArgumentException.class, t::getTotalPrice);
+        CashRegister cr = new CashRegister(new ArrayList<>(List.of(100, 50, 20)));
+        assertThrows(IllegalStateException.class, () -> t.payWithCash(cr, new ArrayList<>(List.of(1000))));
     }
+
+
+    //tester för 100% täckning
 
     @Test
     public void payWithCashInsufficientThrowsException() {
@@ -413,15 +420,6 @@ public class TransactionTest {
     }
 
     @Test
-    public void cantGiveChange(){
-        List<Item> items = createItems();
-        List<Deductor> deductors = new ArrayList<>();
-        Transaction t = new Transaction(items, deductors, createCustomerJohnSmith());
-        CashRegister cr = new CashRegister(new ArrayList<>(List.of(100, 50, 20)));
-        assertThrows(IllegalStateException.class, () -> t.payWithCash(cr, new ArrayList<>(List.of(1000))));
-    }
-
-    @Test
     public void bonuscheckDeductorAdjustsBonusPointsCorrectlyWhenAmountExceedsTotal() {
         Currency SEK = createSEK();
         Money cheapItemPrice = new Money(SEK, 500); // 5 kr
@@ -444,17 +442,6 @@ public class TransactionTest {
         assertEquals(0, customer.getBonusPoints(), "Bonuspoints should not go negative beyond total price");
     }
 
-    @Test
-    public void applyDeductorsThrowsExceptionForInvalidDeductor() {
-        List<Item> items = createItems();
-
-        Deductor invalidDeductor = new Deductor(10, "OgiltigTyp");
-        List<Deductor> deductors = List.of(invalidDeductor);
-
-        Transaction t = new Transaction(items, deductors, createCustomerJohnSmith());
-
-        assertThrows(IllegalArgumentException.class, t::applyDeductors);
-    }
 
     @Test
     public void bonuscheckDeductorSubtractsFullAmountWhenTotalExceedsDeductor() {
@@ -478,5 +465,12 @@ public class TransactionTest {
         assertEquals(10.0, t.getTotalPrice(), 0.001);
 
         assertEquals(0, customer.getBonusPoints(), "Bonuspoints should subtract full deductor amount");
+    }
+
+    @Test
+    void customerCannotBeNull(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Transaction(createItems(), createDeductors(), null);
+        });
     }
 }

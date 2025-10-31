@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 public class ItemType {
     private final String name;
     private final double taxRate;
@@ -34,6 +36,23 @@ public class ItemType {
         return ageLimit;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if(this == other) {
+            return true;
+        }
+        if(other == null || other.getClass() != getClass()) {
+            return false;
+        }
+        ItemType itemType = (ItemType) other;
+        return name.equals(itemType.name) && taxRate == itemType.taxRate && deposit.equals(itemType.deposit) && ageLimit == itemType.ageLimit;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, taxRate, deposit, ageLimit);
+    }
+
 
     private void validateName(String name) {
         if(name == null || name.isEmpty()) {
@@ -55,6 +74,10 @@ public class ItemType {
     private void validateDeposit(Money deposit) {
         if(deposit.getAmountInMinorUnit() < 0) {
             throw new IllegalArgumentException("Deposit cannot be negative");
+        }
+
+        if(deposit.getAmountInMinorUnit() > 500) {
+            throw new IllegalArgumentException("Max deposit at this time is 5 kr");
         }
     }
 

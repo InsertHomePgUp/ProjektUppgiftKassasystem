@@ -1,8 +1,10 @@
 package org.example;
 
+import java.util.Objects;
+
 public class Item {
     private final String name;
-    private final Money price;
+    private Money price;
     private final ItemType itemType;
 
     public Item (String name, ItemType itemType, Money price) {
@@ -22,6 +24,11 @@ public class Item {
         return itemType;
     }
 
+    public void setDiscount(double percent) {
+        double fraction = 1 - (percent / 100); //To get fraction
+        price = new Money(SEK.instance, price.multiply(fraction).getAmountInMinorUnit());
+    }
+
     public Money getPrice() {
         return price;
     }
@@ -32,6 +39,23 @@ public class Item {
 
     public Money getPriceWithTax() {
         return price.multiply((1 + itemType.getTaxRate()));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(this == other) {
+            return true;
+        }
+        if(other == null || other.getClass() != getClass()) {
+            return false;
+        }
+        Item item = (Item) other;
+        return name.equals(item.name) && itemType.equals(item.itemType) && price.equals(item.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, itemType, price);
     }
 
     @Override

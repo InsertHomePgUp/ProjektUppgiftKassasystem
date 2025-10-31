@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 public class Money {
 
 	private static final int MAJOR_UNIT = 100;
@@ -8,7 +10,14 @@ public class Money {
 	private final long amountInMinorUnit;
 
 	public Money(Currency currency, long amountInMinorUnit) {
-        this.currency = currency;
+
+		if (currency == null) {
+			throw new NullPointerException("Currency can not be null");
+		}
+		if (amountInMinorUnit < 0L) {
+			throw new IllegalArgumentException("Ammount can not be less then 0");
+		}
+		this.currency = currency;
 		this.amountInMinorUnit = amountInMinorUnit;
 	}
 
@@ -33,12 +42,20 @@ public class Money {
 	}
 
 	public Money multiply(double factor) {
-		long newAmmount = (long) (amountInMinorUnit * factor);
 
-		return new Money(currency, newAmmount);
+		if (factor < 0) {
+			throw new IllegalArgumentException("Can not multiply with negative factor");
+		}
+		long newAmount = Math.round(amountInMinorUnit * factor);
+
+		return new Money(currency, newAmount);
 	}
 
 	public Money addInMinor(long addedMinorUnits) {
+
+		if (addedMinorUnits < 0) {
+			throw new IllegalArgumentException("Can not add with negative amount");
+		}
 
 		long newAmmount = amountInMinorUnit + addedMinorUnits;
 		if (newAmmount < amountInMinorUnit) {
@@ -50,9 +67,13 @@ public class Money {
 
 	public Money addInMajor(long addedMajorUnits) {
 
+		if (addedMajorUnits < 0) {
+			throw new IllegalArgumentException("Can not add with negative amount");
+		}
+
 		long newAmmount = amountInMinorUnit + addedMajorUnits * MAJOR_UNIT;
 
-		if (newAmmount < amountInMinorUnit) {
+		if (newAmmount < 0) {
 			throw new ArithmeticException("Overflow!");
 		}
 
@@ -61,20 +82,28 @@ public class Money {
 
 	public Money subtractInMinor(long addedMinorUnits) {
 
+		if (addedMinorUnits < 0) {
+			throw new IllegalArgumentException("Can not subtract with negative amount");
+		}
+
 		long newAmmount = amountInMinorUnit - addedMinorUnits;
 
-		if (newAmmount > amountInMinorUnit) {
-			throw new ArithmeticException("Underflow!");
+		if (newAmmount < 0) {
+			throw new ArithmeticException("Can not subract more then current amount!");
 		}
 		return new Money(currency, newAmmount);
 	}
 
 	public Money subtractInMajor(long addedMajorUnits) {
 
+		if (addedMajorUnits < 0) {
+			throw new IllegalArgumentException("Can not subtract with negative amount");
+		}
+
 		long newAmmount = amountInMinorUnit - addedMajorUnits * MAJOR_UNIT;
 
-		if (newAmmount > amountInMinorUnit) {
-			throw new ArithmeticException("Underflow!");
+		if (newAmmount < 0) {
+			throw new ArithmeticException("Can not subract more then current amount!");
 		}
 		return new Money(currency, newAmmount);
 	}
@@ -88,5 +117,20 @@ public class Money {
 		return String.format("%d,%d %s", getAmountInMajorUnit(), getRestAfterMajorUnit(), getCurrency().getSymbol());
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (other == null || other.getClass() != getClass()) {
+			return false;
+		}
+		Money money = (Money) other;
+		return currency.equals(money.currency) && amountInMinorUnit == money.amountInMinorUnit;
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(currency, amountInMinorUnit);
+	}
 }

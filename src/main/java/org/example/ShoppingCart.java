@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ShoppingCart {
 
-    private List<Item> cart;
+    private final List<Item> cart;
     private final Scanner scanner;
 
     public ShoppingCart(Scanner scanner) {
@@ -34,6 +34,6 @@ public class ShoppingCart {
     }
 
     public List<Item> viewCart(){
-        return cart;
+        return Collections.unmodifiableList(cart);
     }
 }

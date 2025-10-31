@@ -55,28 +55,27 @@ public class ItemTest {
 
     @Test
     void cannotCreateItemWithNegativePrice() {
-        Money negativePrice = new Money(SEK.instance, -500);
-        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, negativePrice));
+        assertThrows(IllegalArgumentException.class, () -> new Item(testName, itemType, new Money(SEK.instance, -500)));
     }
 
     @Test
     void priceWithTaxCalculatedCorrectly() {
         Item item = new Item(testName, itemType, price);
-        assertEquals(11500L, item.getPriceWithTax().getAmountInMinorUnit());
+        assertEquals(11500, item.getPriceWithTax().getAmountInMinorUnit());
     }
 
     @Test
     void priceWithZeroTaxCalculatedCorrectly() {
         ItemType itemTypeZeroTax = new ItemType("Test", 0.0, deposit, 0);
         Item item = new Item(testName, itemTypeZeroTax, price);
-        assertEquals(10000L, item.getPriceWithTax().getAmountInMinorUnit());
+        assertEquals(10000, item.getPriceWithTax().getAmountInMinorUnit());
     }
 
     @Test
     void priceWithFractionalTaxCalculatedCorrectly() {
-        ItemType itemTypeZeroTax = new ItemType("Test", 12.5, deposit, 0);
-        Item item = new Item(testName, itemTypeZeroTax, price);
-        assertEquals(11250L, item.getPriceWithTax().getAmountInMinorUnit());
+        ItemType itemTypeFractionalTax = new ItemType("Test", 12.5, deposit, 0);
+        Item item = new Item(testName, itemTypeFractionalTax, price);
+        assertEquals(11250, item.getPriceWithTax().getAmountInMinorUnit());
     }
 
     @Test
@@ -94,4 +93,63 @@ public class ItemTest {
         assertEquals("TestItem, TestItemType, 12,50 kr", itemTwo.toString());
     }
 
+    @Test
+    void setDiscountTest() {
+        Item item = new Item(testName, itemType, price);
+        assertEquals(price, item.getPrice());
+        item.setDiscount(12.5);
+        assertEquals(8750, item.getPrice().getAmountInMinorUnit());
+    }
+
+    @Test
+    void equalsTestSameObject() {
+        Item item = new Item(testName, itemType, price);
+        assertEquals(item, item);
+    }
+
+    @Test
+    void equalsTestNull() {
+        Item item = new Item(testName, itemType, price);
+        assertFalse(item.equals(null));
+    }
+
+    @Test
+    void equalsTestDifferentClass() {
+        Item item = new Item(testName, itemType, price);
+        ItemType itemType = new ItemType("Test", 15.0, new Money(SEK.instance, 100), 0);
+        assertNotEquals(item, itemType);
+    }
+
+    @Test
+    void equalsTestDifferentValues() {
+        //Different name
+        Item itemA = new Item("A", itemType, price);
+        Item itemB = new Item("B", itemType, price);
+        assertNotEquals(itemA, itemB);
+
+        //Different ItemType
+        Item itemC = new Item("A", new ItemType("Test", 15.0, new Money(SEK.instance, 0), 0), price);
+        assertNotEquals(itemA, itemC);
+
+        //Different price
+        Item itemD = new Item("A", itemType, new Money(SEK.instance, 12345));
+        assertNotEquals(itemA, itemD);
+    }
+
+    @Test
+    void equalsTestDifferentInstance() {
+        Item itemA = new Item("A", itemType, price);
+        Item itemB = new Item("A", itemType, price);
+
+        assertEquals(itemA, itemB);
+    }
+
+    @Test
+    void hashcodeIsConsistent() {
+        Item itemA = new Item(testName, itemType, price);
+        int hash1 = itemA.hashCode();
+        int hash2 = itemA.hashCode();
+
+        assertEquals(hash1, hash2);
+    }
 }

@@ -24,9 +24,7 @@ public class Bank {
 	private void setAvailableCurrencies() {
 
 		this.addNewCurrency(SEK.instance.toString(), SEK.instance, sekToSekConversionRate);
-
 		this.addNewCurrency(USD.instance.toString(), USD.instance, usdToSekConversionRate);
-
 		this.addNewCurrency(EURO.instance.toString(), EURO.instance, euroToSekConversionRate);
 
 	}
@@ -44,7 +42,12 @@ public class Bank {
 
 	public double getConversionRate(Currency from, Currency to) {
 
+		if (conversionRates.get(to) == 0) {
+			throw new ArithmeticException("Can not convert if rate is zero");
+		}
+
 		if (from.compareTo(SEK.instance) == 0) {
+
 			return 1 / conversionRates.get(to);
 		} else if (to.compareTo(SEK.instance) == 0) {
 			return conversionRates.get(from);
