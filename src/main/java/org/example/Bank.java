@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ public class Bank {
 	private Map<Currency, Double> conversionRates;
 
 	private Map<String, Currency> currencySet;
-	
+
 	private final double sekToSekConversionRate = 1;
 	private final double usdToSekConversionRate = 10;
 	private final double euroToSekConversionRate = 11;
@@ -70,7 +71,7 @@ public class Bank {
 
 	public Map<String, Currency> getAvaliableCurrencies() {
 
-		return this.currencySet;
+		return Collections.unmodifiableMap(this.currencySet);
 	}
 
 }
