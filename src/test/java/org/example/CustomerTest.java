@@ -24,7 +24,7 @@ public class CustomerTest {
         phone = "0700143541";
         mail = "Jane@Doe.com";
         customer = new Customer(name, pID, phone, mail);
-        Money money = new Money(SEK.instance, 1000);
+        Money money = new Money(SEK.instance, 100);
         ItemType bread = new ItemType("Bread", 1.0, money, 0);
         ItemType fruit = new ItemType("Fruit", 0.5, money, 0);
         banana1 = new Item("Banana", fruit, money);

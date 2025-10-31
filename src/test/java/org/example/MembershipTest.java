@@ -16,7 +16,7 @@ public class MembershipTest {
     @BeforeEach
     public void setUp() {
         customer = new Customer("Jane Doe", "040701-8621", "0700143541", "Jane@Doe.com");
-        Money money = new Money(SEK.instance, 1000);
+        Money money = new Money(SEK.instance, 100);
         ItemType fruit = new ItemType("Fruit", 0.5, money, 0);
         banana = new Item("Banana", fruit, money);
     }
