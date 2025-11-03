@@ -41,8 +41,14 @@ public class ShoppingCartWithMockitoTest {
 
     @Test
     void addMultipleItems() {
-        when(mockScanner.scanBarcode("1")).thenReturn(beer);
-        when(mockScanner.scanBarcode("2")).thenReturn(cider);
+        when(mockScanner.scanBarcode(anyString())).thenAnswer(invocation -> {
+            String code = invocation.getArgument(0);
+            switch (code) {
+                case "1": return beer;
+                case "2": return cider;
+                default: throw new IllegalArgumentException("Unknown barcode: " + code);
+            }
+        });
 
         shoppingCart.scanAndAdd("1");
         shoppingCart.scanAndAdd("2");
@@ -50,8 +56,7 @@ public class ShoppingCartWithMockitoTest {
         assertEquals(2, shoppingCart.viewCart().size());
         assertEquals("Beer", shoppingCart.viewCart().get(0).getName());
         assertEquals("Cider", shoppingCart.viewCart().get(1).getName());
-        verify(mockScanner, times(1)).scanBarcode("1");
-        verify(mockScanner, times(1)).scanBarcode("2");
+        verify(mockScanner, times(2)).scanBarcode(anyString());
     }
 
     @Test
@@ -87,7 +92,7 @@ public class ShoppingCartWithMockitoTest {
 
     @Test
     void nullBarcodeThrowsException() {
-        when(mockScanner.scanBarcode(null)).thenThrow(new IllegalArgumentException("Barcode cannot be null"));
+        doThrow(new IllegalArgumentException("Barcode cannot be null")).when(mockScanner).scanBarcode(null);
 
         assertThrows(IllegalArgumentException.class, () -> shoppingCart.scanAndAdd(null));
 
@@ -105,10 +110,30 @@ public class ShoppingCartWithMockitoTest {
 
     @Test
     void invalidBarcodeThrowsException() {
-        when(mockScanner.scanBarcode("Invalid barcode")).thenThrow(new IllegalArgumentException("Barcode not in database"));
+        doThrow(new IllegalArgumentException("Barcode not in database")).when(mockScanner).scanBarcode("Invalid barcode");
 
         assertThrows(IllegalArgumentException.class, () -> shoppingCart.scanAndAdd("Invalid barcode"));
 
         verify(mockScanner, times(1)).scanBarcode("Invalid barcode");
+    }
+
+    @Test
+    void scannerFailsThenSucceeds() {
+        when(mockScanner.scanBarcode("1")).thenThrow(new IllegalStateException("Scanner disconnected")).thenReturn(beer);
+
+        assertThrows(IllegalStateException.class, () -> shoppingCart.scanAndAdd("1"));
+
+        shoppingCart.scanAndAdd("1");
+
+        verify(mockScanner, times(2)).scanBarcode("1");
+    }
+
+    @Test
+    void verifyNoExtraMockInteractions() {
+        when(mockScanner.scanBarcode("1")).thenReturn(beer);
+        shoppingCart.scanAndAdd("1");
+
+        verify(mockScanner).scanBarcode("1");
+        verifyNoMoreInteractions(mockScanner);
     }
 }
