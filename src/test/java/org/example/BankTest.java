@@ -3,6 +3,7 @@ package org.example;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Map;
 
@@ -82,6 +83,22 @@ public class BankTest {
 		assertEquals(expected, USDollar.getAmountInMinorUnit());
 
 	}
+	
+	@Test
+	public void testRoundingInExchange() {
+
+		long ammountIn = 1005;
+		long expected = 101;
+
+		Money swedishMoney = new Money(SEK.instance, ammountIn);
+
+		Money USDollar = bank.exchange(swedishMoney, USD.instance);
+
+		assertEquals(expected, USDollar.getAmountInMinorUnit());
+
+	}
+	
+	
 
 	@Test
 	public void testExchangeUSDtoEuro() {
@@ -125,5 +142,38 @@ public class BankTest {
 
 		assertThrows(UnsupportedOperationException.class, () -> result.put("GBP", new Currency("GBP", "P", 1, 2, 3)));
 	}
+	
+	@Test
+    void testAvailableCurrenciesContent() {
+
+        Map<String, Currency> currencies = bank.getAvaliableCurrencies();
+
+        assertEquals(3, currencies.size(), "Expected 3 available currencies");
+
+        assertTrue(currencies.containsKey(USD.instance.toString()), "Should contain USD");
+        assertTrue(currencies.containsKey(EURO.instance.toString()), "Should contain EUR");
+        assertTrue(currencies.containsKey(SEK.instance.toString()), "Should contain EUR");
+
+        assertEquals(SEK.instance, currencies.get(SEK.instance.toString()));
+        assertEquals(USD.instance, currencies.get(USD.instance.toString()));
+        assertEquals(EURO.instance, currencies.get(EURO.instance.toString()));
+    }
+	
+	 @Test
+	void testSpyExchangeDivisionWithZero() {
+
+		Bank realBank = new Bank();
+
+		Bank spyBank = spy(realBank);
+
+        Currency from = SEK.instance;
+        Currency to = SEK.instance;
+        
+        when(spyBank.getConversionRate(from, to)).thenReturn(0.0);
+
+        assertThrows(ArithmeticException.class, () -> spyBank.exchange(new Money(from,100L), to),
+				"Expected exchange to throw, but it didn't");
+
+    }
 
 }

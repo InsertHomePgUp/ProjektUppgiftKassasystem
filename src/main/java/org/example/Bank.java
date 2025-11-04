@@ -64,12 +64,29 @@ public class Bank {
 		if (!conversionRates.containsKey(previousCurrency)) {
 			throw new IllegalArgumentException("No conversion rate found for " + previousCurrency);
 		}
+		
+		if (getConversionRate(money.getCurrency(), newCurrency) == 0) {
+			throw new ArithmeticException("Can not convert if rate is zero");
+		}
+		
+		
 
 		double rate = this.getConversionRate(previousCurrency, newCurrency);
-		Money moneyInNewCurrency = new Money(newCurrency, (long) (money.getAmountInMinorUnit() * rate));
+		Money moneyInNewCurrency = new Money(newCurrency, (long) (money.getAmountInMinorUnit() * rate) + compensateForRounding(money.getAmountInMinorUnit(), rate));
 
 		return moneyInNewCurrency;
 
+	}
+	
+	private long compensateForRounding(long num, double factor) {
+		double result = (double)num * factor;
+		double decimalPart = result - (long) (result);
+		if(decimalPart >= 0.5) {
+			return 1;
+		}else {
+			return 0;
+		}
+		
 	}
 
 	public Map<String, Currency> getAvaliableCurrencies() {

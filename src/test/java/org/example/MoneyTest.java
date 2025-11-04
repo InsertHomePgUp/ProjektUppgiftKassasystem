@@ -4,6 +4,9 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collections;
+import java.util.Map;
+
 public class MoneyTest {
 
 	private Currency usd;
@@ -172,6 +175,9 @@ public class MoneyTest {
 		assertEquals(original.equals(null), false);
 
 	}
+	
+	
+
 
 	@Test
 	void testHashCode() {
